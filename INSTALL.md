@@ -20,6 +20,6 @@ Install the graphics package through terminal:
 
 `$ opam install graphics`
 
-Download XQuartz ((https://www.xquartz.org/))
+Download XQuartz (https://www.xquartz.org/)
 
 Now you can play with `$ make play`
