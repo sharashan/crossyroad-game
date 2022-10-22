@@ -1,4 +1,4 @@
 (library
  (name Crossyroad)
  (public_name Crossyroad)
- (libraries yojson ANSITerminal))
+ (libraries yojson graphics ANSITerminal))

@@ -1,0 +1,14 @@
+open Graphics
+
+type input = {
+  key_pressed : char;
+  mouse_down : bool;
+}
+(** Draws the sprites and the background*)
+
+val text : string -> int -> Graphics.color -> unit
+(** [text str s] draws the text str with size s*)
+
+val stats : Graphics.status -> input
+val get_start_input : unit -> unit
+val draw_start_screen : unit -> unit
