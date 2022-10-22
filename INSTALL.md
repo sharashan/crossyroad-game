@@ -1,32 +1,25 @@
 WARNING: THESE INSTRUCTIONS MIGHT ONLY WORK FOR MACOS CURRENTLY
 
-WINDOWS Installation:
-First install the graphics package's system dependency with the following command:
+## Windows Instructions:
+Install Graphics package with the following commands:
+  '$ sudo apt install pkg-config'
 
-  $ sudo apt install pkg-config
+  '$ opam install graphics'
 
-Then install the graphics package with the following command:
+Download and install the Xming X Server at (https://sourceforge.net/projects/xming/)
 
-  $ opam install graphics
+Run XLaunch and do not change any of the settings, saving it at the end.
 
-Next we need to install an X server in windows to be able to see the display output.
-Xming is a free option available here:
-https://sourceforge.net/projects/xming/
-Go through the install wizard. All default settings is fine. Change Keyboard settings using Windows key. Move the two sliders all the way to the right.
+In terminal, enter '$ export DISPLAY=:0'
 
-Open Xming and enter the command:
-  $ export DISPLAY=:0
+Now you can play with '$make play'
 
-And now you're ready to run:
+## MacOS Instructions:
 
-  $ make play
+Install the graphics package through terminal:
 
-MacOS Installation:
+'$ opam install graphics'
 
-Make sure you have installed XQuartz then install the graphics package with the following command:
+Download XQuartz ((https://www.xquartz.org/))
 
-  $ opam install graphics
-
-Then you should be ready to run:
-
-  $ make play
+Now you can play with '$ make play'
