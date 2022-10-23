@@ -16,7 +16,7 @@ publish: false
 # Pithy title
 title: "Crossy Road: Oompa-loompa Version"
 # OK if this is a Cornell Github link, but public gallery viewers won't be able to see it.
-git-repo: "https://github.coecis.cornell.edu/svs45/oompaloompa.git"
+git-repo: "https://github.coecis.cornell.edu/svs45/crossyroadoompa.git"
 # If you have no demo screencast, replace the url string with an empty string ""
 demo-video-url: ""
 # Write a short, attention-grabbing description of your project.
