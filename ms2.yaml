@@ -1,0 +1,32 @@
+---
+# Members of your group.
+group:
+  - name: Shara Shanmugasundaram
+    netid: svs45
+  - name: Devika Krishna
+    netid: dk556
+  - name: Sanjana Kasetti
+    netid: sk2465
+# Your PM.
+pm:
+  name: Joseph Ugarte
+  netid: jeu9@cornell.edu
+# Set to false if you don't want your gallery entry to be public.
+publish: false
+# Pithy title
+title: "Crossy Road: Oompa-loompa Version"
+# OK if this is a Cornell Github link, but public gallery viewers won't be able to see it.
+git-repo: "https://github.coecis.cornell.edu/svs45/oompaloompa.git"
+# If you have no demo screencast, replace the url string with an empty string ""
+demo-video-url: ""
+# Write a short, attention-grabbing description of your project.
+desc: >
+  Our project is recreating the game Crossy Road. It uses graphics and arrow 
+  keys to move the character around on the screen. The main objective is to get
+  the highest possible score (i.e. how many steps the character takes) without
+  dying. The interface can be programmable if the user wishes to change difficulty
+  levels of the speed of the objects and how many lives the user can have to continue 
+  their run before getting the final score.
+
+  Standard visual I/O is supported, but the game can also emit sound 
+  when the character dies.
