@@ -1,10 +1,11 @@
 open Graphics
 
+(** Draws the sprites and the background*)
+
 type input = {
   key_pressed : char;
   mouse_down : bool;
 }
-(** Draws the sprites and the background*)
 
 val text : string -> int -> Graphics.color -> unit
 (** [text str s] draws the text str with size s*)
