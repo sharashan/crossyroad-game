@@ -1,4 +1,5 @@
 open Graphics
+open Characters
 
 type color = {
   r : int;
