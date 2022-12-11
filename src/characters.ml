@@ -19,3 +19,5 @@ type obstacle = {
   location : int * int;
   speed : int;
 }
+
+let draw_oompa x y w h = Graphics.draw_rect x y w h
