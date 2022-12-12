@@ -1,7 +1,7 @@
 (*define types for objects in game*)
 
 type player = {
-  location : int * int;
+  mutable location : int * int;
   speed : int;
   frame : int;
   steps : int;
@@ -20,4 +20,9 @@ type obstacle = {
   speed : int;
 }
 
-let draw_oompa x y w h = Graphics.draw_rect x y w h
+let draw_oompa (t : player) x y =
+  let a = t.location = (x, y) in
+  let b = t.speed = 0 in
+  let c = t.frame = 0 in
+  let d = t.steps = 0 in
+  Graphics.draw_rect x y 30 30
