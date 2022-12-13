@@ -1,5 +1,6 @@
 open Graphics
 open Characters
+open Constants
 
 type color = {
   r : int;
@@ -90,19 +91,48 @@ let draw_fail_screen () =
   Graphics.set_font "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";
   text "lmaoo You Lost :(" 500 Graphics.white
 
+(*let background_crossy () = 
+  (**GRASS*)
+  Graphics.moveto 0 0;
+  Graphics.set_color (Graphics.rgb 102 204 0);
+  Graphics.draw_rect 0 0 1000 150;
+  Graphics.fill_rect 0 0 1000 150;
+  (**ROAD*) 
+  Graphics.moveto 0 0;
+  Graphics.set_color (Graphics.rgb 96 96 96);
+  Graphics.draw_rect 0 150 1000 250;
+  Graphics.fill_rect 0 150 1000 250;
+  (**GRASS*)
+  Graphics.moveto 0 0;
+  Graphics.set_color (Graphics.rgb 102 204 0);
+  Graphics.draw_rect 0 400 1000 150;
+  Graphics.fill_rect 0 400 1000 150;
+  (**WATER*) 
+  Graphics.moveto 0 0;
+  Graphics.set_color (Graphics.rgb 102 178 255);
+  Graphics.draw_rect 0 550 1000 200;
+  Graphics.fill_rect 0 550 1000 200*)
+
 let rec start (oompa : player) lst =
+  Constants.background_crossy (); 
+  (**UPDATE SCORE*)
+  Graphics.moveto 800 800;
+  text "Score: " 200 Graphics.black;
+  Graphics.draw_string (string_of_int init.oompa.steps);
+  (**OBSTACLE*)
+  Graphics.set_color Graphics.black;
+  Graphics.draw_rect 100 100 50 50;
+  (**OOMPA*)
   Graphics.set_color Graphics.blue;
   Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30;
   let input_2 = Graphics.read_key () in
   move_oompa init.oompa input_2 [];
   Graphics.moveto (fst init.oompa.location) (snd init.oompa.location);
   Graphics.clear_graph ();
+  (**REDRAW GRAPHICS*)
   Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30;
   Graphics.set_color Graphics.black;
   Graphics.draw_rect 100 100 50 50;
-  Graphics.moveto 750 720;
-  text "Score: " 200 Graphics.black;
-  Graphics.draw_string (string_of_int init.oompa.steps);
   if collision oompa lst then draw_fail_screen () else start oompa lst
 
 let rec get_start_input () =
@@ -111,9 +141,9 @@ let rec get_start_input () =
     Graphics.clear_graph ();
     Graphics.set_color Graphics.black;
     Graphics.draw_rect 100 100 50 50;
-    Graphics.moveto 750 720;
+   (** Graphics.moveto 750 720;
     text "Score: " 150 Graphics.black;
-    Graphics.draw_string (string_of_int init.oompa.steps);
+    Graphics.draw_string (string_of_int init.oompa.steps);**)
     start init.oompa obstacle_lst)
   else (
     Graphics.clear_graph ();

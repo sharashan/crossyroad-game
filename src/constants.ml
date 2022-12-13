@@ -1,7 +1,36 @@
 open Graphics
 
+type background =
+  | Tree
+  | River
+  | Road
+  | Grass
+
+type background_type = {
+  object_type : background;
+  location : int * int;
+}
+
 (*Draws the background objects in the map*)
-let grass = Graphics.draw_rect 0 0 1000 50
-let log x y = Graphics.draw_rect x y 100 50
-let water = Graphics.draw_rect 0 100 1000 50
-let car x y = Graphics.draw_rect x y 50 50
+
+let background_crossy () = 
+  (**GRASS*)
+  Graphics.moveto 0 0;
+  Graphics.set_color (Graphics.rgb 102 204 0);
+  Graphics.draw_rect 0 0 1000 150;
+  Graphics.fill_rect 0 0 1000 150;
+  (**ROAD*) 
+  Graphics.moveto 0 0;
+  Graphics.set_color (Graphics.rgb 96 96 96);
+  Graphics.draw_rect 0 150 1000 250;
+  Graphics.fill_rect 0 150 1000 250;
+  (**GRASS*)
+  Graphics.moveto 0 0;
+  Graphics.set_color (Graphics.rgb 102 204 0);
+  Graphics.draw_rect 0 400 1000 150;
+  Graphics.fill_rect 0 400 1000 150;
+  (**WATER*) 
+  Graphics.moveto 0 0;
+  Graphics.set_color (Graphics.rgb 102 178 255);
+  Graphics.draw_rect 0 550 1000 200;
+  Graphics.fill_rect 0 550 1000 200

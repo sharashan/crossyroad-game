@@ -7,19 +7,6 @@ type player = {
   mutable steps : int;
 }
 
-type obstacle_type =
-  | Tree
-  | Log
-  | River
-  | Road
-  | Grass
-
-type obstacle = {
-  object_type : obstacle_type;
-  location : int * int;
-  speed : int;
-}
-
 let draw_oompa (t : player) x y =
   let a = t.location = (x, y) in
   let b = t.speed = 0 in
