@@ -91,27 +91,27 @@ let rec collision (oompa : player) (lst) =
   | [] -> false
   | h :: t ->
       if
-        abs (x_lst.(1) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(1) - snd oompa.location)
+        abs (x_lst.(0) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs (y_lst.(0) - snd oompa.location)
            <= (16 / 2) + (36 / 2)
       then true
       else if 
-        abs (x_lst.(2) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        abs (x_lst.(1) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs (y_lst.(1) - snd oompa.location)
+        <= (16 / 2) + (36 / 2)
+      then true
+      else if abs (x_lst.(2) - fst oompa.location) <= (16 / 2) + (36 / 2)
         && abs (y_lst.(2) - snd oompa.location)
-     <= (16 / 2) + (36 / 2)
-then true
-else if abs (x_lst.(3) - fst oompa.location) <= (16 / 2) + (36 / 2)
-  && abs (y_lst.(3) - snd oompa.location)
-     <= (16 / 2) + (36 / 2)
-then true
-else if abs (x_lst.(4) - fst oompa.location) <= (16 / 2) + (36 / 2)
-  && abs (y_lst.(4) - snd oompa.location)
-     <= (16 / 2) + (36 / 2)
-then true
-else if abs (x_lst.(5) - fst oompa.location) <= (16 / 2) + (36 / 2)
-  && abs (y_lst.(5) - snd oompa.location)
-     <= (16 / 2) + (36 / 2)
-then true
+        <= (16 / 2) + (36 / 2)
+      then true
+      else if abs (x_lst.(3) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs (y_lst.(3) - snd oompa.location)
+        <= (16 / 2) + (36 / 2)
+        then true
+      else if abs (x_lst.(4) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs (y_lst.(4) - snd oompa.location)
+        <= (16 / 2) + (36 / 2)
+      then true
       else false && collision oompa t
 
 let move_oompa (oompa : player) new_input move_lst =
