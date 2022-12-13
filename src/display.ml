@@ -65,8 +65,13 @@ let create_issues_1 lst =
   |[]->  (pain_init 0).trees :: [] 
   | h :: t -> (pain_init 0).trees :: h :: t 
 
-  let x_lst = [|Random.int 1000; Random.int 1000;Random.int 1000;Random.int 1000;Random.int 1000;Random.int 1000; Random.int 1000;Random.int 1000;Random.int 1000;Random.int 1000|]
-  let y_lst = [|Random.int 150 - 25; Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25; Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25|]
+  let x_lst = [|Random.int 1000; Random.int 1000;Random.int 1000;Random.int 1000
+  ;Random.int 1000;Random.int 1000; Random.int 1000;Random.int 1000;
+  Random.int 1000;Random.int 1000|]
+  let y_lst = [|Random.int 150 - 25; Random.int 150 - 25;Random.int 150 - 25;
+  Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25; 
+  Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25;
+  Random.int 150 - 25|]
 
 let draw_draw_obstacles (h) y = 
   for x = 0 to 4 do (
@@ -108,6 +113,27 @@ let rec collision (oompa : player) (lst) =
         then true
       else if abs (x_lst.(4) - fst oompa.location) <= (16 / 2) + (36 / 2)
         && abs (y_lst.(4) - snd oompa.location)
+        <= (16 / 2) + (36 / 2)
+      then true
+else if abs (x_lst.(5) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs (y_lst.(5) - snd oompa.location)
+           <= (16 / 2) + (36 / 2)
+      then true
+      else if 
+        abs (x_lst.(6) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs (y_lst.(6) - snd oompa.location)
+        <= (16 / 2) + (36 / 2)
+      then true
+      else if abs (x_lst.(7) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs (y_lst.(7) - snd oompa.location)
+        <= (16 / 2) + (36 / 2)
+      then true
+      else if abs (x_lst.(8) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs (y_lst.(8) - snd oompa.location)
+        <= (16 / 2) + (36 / 2)
+        then true
+      else if abs (x_lst.(9) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs (y_lst.(9) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
       else false && collision oompa t
