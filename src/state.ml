@@ -27,8 +27,8 @@ let draw_start_screen () =
 
 let draw_fail_screen () =
   Graphics.clear_graph ();
-  Graphics.draw_rect 200 200 600 500;
   Graphics.fill_rect 200 200 600 500;
+  Graphics.draw_rect 200 200 600 500;
   Graphics.moveto 320 420;
   Graphics.set_font "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";
   text "lmaoo You Lost :(" 500 Graphics.white
@@ -52,15 +52,12 @@ let string_to_state = function
 
 let update_state s t = t.game_state <- string_to_state s
 
-let start_to_play s t =
-  if t.game_state = Start then Display.get_start_input ();
-  update_state "play"
+(*let start_to_play s t = if t.game_state = Start then Display.get_start_input
+  (); update_state "play"
 
-let set_start t =
-  update_state "start";
-  start_to_play "play"
+  let set_start t = update_state "start"; start_to_play "play"*)
 
 let update_screen s t =
-  if t.game_state = Fail then draw_fail_screen
+  if t.game_state = Fail then Display.draw_fail_screen
   else if t.game_state = Pause then draw_pause_screen
   else failwith "You suck!"
