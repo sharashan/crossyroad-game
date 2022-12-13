@@ -44,14 +44,16 @@ let text text size color =
 let rec stats (frame : Graphics.status) =
   { key_pressed = frame.key; mouse_down = frame.button }
 
+let take_a_step (oompa : player) = oompa.steps <- oompa.steps + 1
+
 let rec collision (oompa : player) (obstacle_lst : init2 list) =
   match obstacle_lst with
   | [] -> false
   | h :: t ->
       if
-        abs (fst h.obstacle.location - fst oompa.location) <= (10 / 2) + (30 / 2)
+        abs (fst h.obstacle.location - fst oompa.location) <= (16 / 2) + (36 / 2)
         && abs (snd h.obstacle.location - snd oompa.location)
-           <= (10 / 2) + (30 / 2)
+           <= (16 / 2) + (36 / 2)
       then true
       else false && collision oompa t
 
@@ -64,8 +66,9 @@ let move_oompa (oompa : player) new_input move_lst =
         else oompa.location)
   | 'w' ->
       oompa.location <-
-        (if snd oompa.location + 10 < 1000 then
-         (fst oompa.location, snd oompa.location + 10)
+        (if snd oompa.location + 10 < 1000 then (
+         take_a_step oompa;
+         (fst oompa.location, snd oompa.location + 10))
         else oompa.location)
   | 's' ->
       oompa.location <-
@@ -89,6 +92,10 @@ let rec start (oompa : player) lst =
   Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30;
   Graphics.set_color Graphics.black;
   Graphics.draw_rect 100 100 50 50;
+  Graphics.moveto 750 720;
+  text "Score: " 200 Graphics.black;
+  Graphics.draw_string (string_of_int init.oompa.steps);
+
   if collision oompa lst then failwith "YOU SUCK" else start oompa lst
 
 let rec get_start_input () =
@@ -97,6 +104,9 @@ let rec get_start_input () =
     Graphics.clear_graph ();
     Graphics.set_color Graphics.black;
     Graphics.draw_rect 100 100 50 50;
+    Graphics.moveto 750 720;
+    text "Score: " 150 Graphics.black;
+    Graphics.draw_string (string_of_int init.oompa.steps);
     start init.oompa obstacle_lst)
   else (
     Graphics.clear_graph ();

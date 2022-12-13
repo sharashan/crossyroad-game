@@ -12,4 +12,4 @@ val text : string -> int -> Graphics.color -> unit
 
 val stats : Graphics.status -> input
 val get_start_input : unit -> unit
-(*val draw_start_screen : unit -> unit *)
+val draw_start_screen : unit -> unit

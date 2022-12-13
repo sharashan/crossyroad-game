@@ -4,7 +4,7 @@ type player = {
   mutable location : int * int;
   speed : int;
   frame : int;
-  steps : int;
+  mutable steps : int;
 }
 
 type obstacle_type =
