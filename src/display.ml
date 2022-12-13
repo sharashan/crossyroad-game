@@ -65,18 +65,23 @@ let create_issues_1 lst =
   |[]->  (pain_init 0).trees :: [] 
   | h :: t -> (pain_init 0).trees :: h :: t 
 
-  let x_lst = [|Random.int 1000; Random.int 1000;Random.int 1000;Random.int 1000;Random.int 1000|]
-  let y_lst = [|Random.int 150 - 25; Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25|]
+  let x_lst = [|Random.int 1000; Random.int 1000;Random.int 1000;Random.int 1000;Random.int 1000;Random.int 1000; Random.int 1000;Random.int 1000;Random.int 1000;Random.int 1000|]
+  let y_lst = [|Random.int 150 - 25; Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25; Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25|]
 
-let draw_draw_obstacles (h) = 
+let draw_draw_obstacles (h) y = 
   for x = 0 to 4 do (
   Graphics.set_color Graphics.red; 
-  Graphics.fill_rect (x_lst.(x)) (y_lst.(x)) 50 50;) done
+  Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))) 50 50;) done
 
-let rec draw_obstacles (lst:obstacle list) =
+let draw_obstacles h y = 
+  for x = 5 to 9 do (
+    Graphics.set_color Graphics.red; 
+    Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))+y) 50 50;) done
+
+(*let rec draw_obstacles (lst:obstacle list) =
   match obstacle_lst with
   | [] -> Graphics.draw_rect 0 0 10 10
-  | h :: t -> draw_draw_obstacles h; draw_obstacles t
+  | h :: t -> draw_draw_obstacles h y; draw_obstacles t*)
 
 
 let rec collision (oompa : player) (lst) =
@@ -134,7 +139,8 @@ let move_oompa (oompa : player) new_input move_lst =
 
 let rec start (oompa : player) (lst:obstacle list) =
   Constants.background_crossy (); 
-  draw_draw_obstacles obstacle_lst;
+  draw_draw_obstacles obstacle_lst 0;
+  draw_obstacles obstacle_lst 400;
   (**UPDATE SCORE*)
   Graphics.moveto 800 800;
   text "Score: " 200 Graphics.black;

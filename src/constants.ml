@@ -13,14 +13,19 @@ type background_type = {
 }
 
 (*Draws the background objects in the map*)
+let grass y ={
+  object_type = Grass; location = (0,y); 
+}
 
+let grass_draw x y = 
+  Graphics.draw_rect x y 1000 150;
+  Graphics.fill_rect x y 1000 150
 
 let background_crossy () = 
   (**GRASS*)
   Graphics.moveto 0 0;
   Graphics.set_color (Graphics.rgb 102 204 0);
-  Graphics.draw_rect 0 0 1000 150;
-  Graphics.fill_rect 0 0 1000 150;
+  grass_draw 0 0;
   (**ROAD*) 
   Graphics.moveto 0 0;
   Graphics.set_color (Graphics.rgb 96 96 96);
@@ -29,8 +34,7 @@ let background_crossy () =
   (**GRASS*)
   Graphics.moveto 0 0;
   Graphics.set_color (Graphics.rgb 102 204 0);
-  Graphics.draw_rect 0 400 1000 150;
-  Graphics.fill_rect 0 400 1000 150;
+  grass_draw 0 400;
   (**WATER*) 
   Graphics.moveto 0 0;
   Graphics.set_color (Graphics.rgb 102 178 255);
