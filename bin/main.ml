@@ -2,6 +2,11 @@ open Graphics
 open ANSITerminal
 open Crossyroad
 
+(*type init = { mutable g_state : State.t }
+
+  let init = { g_state = { game_state = Start; mouse_pressed = false;
+  arrow_pressed = false }; } *)
+
 let rec play_game () : unit =
   ANSITerminal.(
     print_string [ white ] "\nWelcome to the Crossy Road: Oomp Ver!\n");
@@ -10,6 +15,7 @@ let rec play_game () : unit =
   if input = "0" || input = "zero" then (
     Graphics.open_graph " 1000x1000";
     Display.draw_start_screen ();
+    (*State.set_start (); *)
     Display.get_start_input ();
     ignore (Graphics.read_key ()))
   else (
