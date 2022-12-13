@@ -49,9 +49,9 @@ let rec collision (oompa : player) (obstacle_lst : init2 list) =
   | [] -> false
   | h :: t ->
       if
-        abs (fst h.obstacle.location - fst oompa.location) <= (20 / 2) + (40 / 2)
+        abs (fst h.obstacle.location - fst oompa.location) <= (10 / 2) + (30 / 2)
         && abs (snd h.obstacle.location - snd oompa.location)
-           <= (30 / 2) + (50 / 2)
+           <= (10 / 2) + (30 / 2)
       then true
       else false && collision oompa t
 
