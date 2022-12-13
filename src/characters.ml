@@ -32,7 +32,7 @@ let trees (x : int) (y : int) =
   { object_type = Tree; location = (Random.int 1000 + x, Random.int 150 + y) }
 
 let rock (x : int) (y : int) =
-  { object_type = Rock; location = (Random.int 1000 + x, Random.int 150 + y) }
+  { object_type = Rock; location = (Random.int 1000 + x, Random.int 200 + y) }
 
 let car (ty : moving) (x : int) (y : int) (s : int) (f : int) =
   { ob_type = Car; location = (x, y); speed = s; frame = f }
