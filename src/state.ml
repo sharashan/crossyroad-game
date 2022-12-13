@@ -52,13 +52,10 @@ let string_to_state = function
 
 let update_state s t = t.game_state <- string_to_state s
 
-let start_to_play s t =
-  if t.game_state = Start then Display.get_start_input ();
-  update_state "play"
+(*let start_to_play s t = if t.game_state = Start then Display.get_start_input
+  (); update_state "play"
 
-let set_start t =
-  update_state "start";
-  start_to_play "play"
+  let set_start s t = update_state "start" t; start_to_play "play"*)
 
 let update_screen s t =
   if t.game_state = Fail then draw_fail_screen

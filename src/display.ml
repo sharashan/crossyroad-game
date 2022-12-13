@@ -83,36 +83,6 @@ let move_oompa (oompa : player) new_input move_lst =
         else oompa.location)
   | _ -> failwith "Not a proper move"
 
-let draw_fail_screen () =
-  Graphics.clear_graph ();
-  Graphics.fill_rect 200 200 600 500;
-  Graphics.draw_rect 200 200 600 500;
-  Graphics.moveto 320 420;
-  Graphics.set_font "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";
-  text "lmaoo You Lost :(" 500 Graphics.white
-
-(*let background_crossy () = 
-  (**GRASS*)
-  Graphics.moveto 0 0;
-  Graphics.set_color (Graphics.rgb 102 204 0);
-  Graphics.draw_rect 0 0 1000 150;
-  Graphics.fill_rect 0 0 1000 150;
-  (**ROAD*) 
-  Graphics.moveto 0 0;
-  Graphics.set_color (Graphics.rgb 96 96 96);
-  Graphics.draw_rect 0 150 1000 250;
-  Graphics.fill_rect 0 150 1000 250;
-  (**GRASS*)
-  Graphics.moveto 0 0;
-  Graphics.set_color (Graphics.rgb 102 204 0);
-  Graphics.draw_rect 0 400 1000 150;
-  Graphics.fill_rect 0 400 1000 150;
-  (**WATER*) 
-  Graphics.moveto 0 0;
-  Graphics.set_color (Graphics.rgb 102 178 255);
-  Graphics.draw_rect 0 550 1000 200;
-  Graphics.fill_rect 0 550 1000 200*)
-
 let rec start (oompa : player) lst =
   Constants.background_crossy (); 
   (**UPDATE SCORE*)
@@ -133,7 +103,8 @@ let rec start (oompa : player) lst =
   Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30;
   Graphics.set_color Graphics.black;
   Graphics.draw_rect 100 100 50 50;
-  if collision oompa lst then draw_fail_screen () else start oompa lst
+  if collision oompa lst then (State.draw_fail_screen ();
+   State.update_state "fail";) else start oompa lst
 
 let rec get_start_input () =
   let input = Graphics.read_key () in

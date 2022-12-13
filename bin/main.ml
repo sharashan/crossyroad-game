@@ -2,10 +2,13 @@ open Graphics
 open ANSITerminal
 open Crossyroad
 
-(*type init = { mutable g_state : State.t }
+type init = { mutable g_state : State.t }
 
-  let init = { g_state = { game_state = Start; mouse_pressed = false;
-  arrow_pressed = false }; } *)
+let init =
+  {
+    g_state =
+      { game_state = Start; mouse_pressed = false; arrow_pressed = false };
+  }
 
 let rec play_game () : unit =
   ANSITerminal.(
@@ -15,9 +18,9 @@ let rec play_game () : unit =
   if input = "0" || input = "zero" then (
     Graphics.open_graph " 1000x1000";
     State.draw_start_screen ();
-    (*State.update_state "start"; Display.get_start_input (); State.update_state
-      "play"; *)
-    State.set_start ();
+    State.update_state "start" init.g_state;
+    Display.get_start_input ();
+    State.update_state "play" init.g_state;
     ignore (Graphics.read_key ()))
   else (
     ANSITerminal.(print_string [ white ] "\nTry again!\n");
