@@ -44,7 +44,7 @@ let trees (x : int) (y : int) =
   { object_type = Tree; location = (Random.int 1000 + x, Random.int 150 + y) }
 
 let rock (x : int) (y : int) =
-  { object_type = Rock; location = (Random.int 1000 + x, Random.int 150 + y) }
+  { object_type = Rock; location = (Random.int 1000 + x, Random.int 200 + y) }
 
 let create_car_lst (c : car_list) = { hist_cars = [] }
 let add_car (c : car_list) (car : moving_ob) = c.hist_cars <- car :: c.hist_cars
