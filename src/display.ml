@@ -26,14 +26,19 @@ type t = {
 
 type init = { mutable oompa : player }
 type init2 = { mutable obstacle : obstacle }
+type init3 = {mutable rock: obstacle}
 
 let init = { oompa = { location = (50, 50); speed = 0; frame = 0; steps = 0 } }
 
 let init2 =
   { obstacle = {object_type = Tree; location = (100, 100)}}
 
+let init3 = {rock = {object_type = Rock; location = (100,650)}}
+
 
 type pain_init = {trees : obstacle}  
+
+type rock_init = {rocks: obstacle}
 
 let pain_init (y : int) =
   { trees = {object_type = Tree; location = (Random.int 1000, Random.int 150 + y) }}
