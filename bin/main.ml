@@ -15,9 +15,9 @@ let rec play_game () : unit =
   if input = "0" || input = "zero" then (
     Graphics.open_graph " 1000x1000";
     State.draw_start_screen ();
-    State.update_state "start";
-    Display.get_start_input ();
-    State.update_state "play";
+    (*State.update_state "start"; Display.get_start_input (); State.update_state
+      "play"; *)
+    State.set_start ();
     ignore (Graphics.read_key ()))
   else (
     ANSITerminal.(print_string [ white ] "\nTry again!\n");
