@@ -46,17 +46,21 @@ let move_oompa (oompa : player) new_input move_lst =
   | 'd' -> oompa.location <- (fst oompa.location + 10, snd oompa.location)
   | _ -> failwith "Not a proper move"
 
+let rec start () =
+  Graphics.set_color Graphics.blue;
+  Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30;
+  let input_2 = Graphics.read_key () in
+  move_oompa init.oompa input_2 [];
+  Graphics.moveto (fst init.oompa.location) (snd init.oompa.location);
+  Graphics.clear_graph ();
+  Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30;
+  start ()
+
 let rec get_start_input () =
   let input = Graphics.read_key () in
   if input = 'a' then (
     Graphics.clear_graph ();
-    Graphics.set_color Graphics.blue;
-    Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30;
-    let input_2 = Graphics.read_key () in
-    move_oompa init.oompa input_2 [];
-    Graphics.moveto (fst init.oompa.location) (snd init.oompa.location);
-    Graphics.clear_graph ();
-    Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30)
+    start ())
   else (
     Graphics.clear_graph ();
     Graphics.moveto 400 420;
