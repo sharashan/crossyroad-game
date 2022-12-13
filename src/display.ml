@@ -25,17 +25,20 @@ type t = {
 }
 
 type init = { mutable oompa : player }
-type init2 = { mutable obstacle : player }
+type init2 = { mutable obstacle : obstacle }
 
 let init = { oompa = { location = (50, 50); speed = 0; frame = 0; steps = 0 } }
 
 let init2 =
-  { obstacle = { location = (100, 100); speed = 0; frame = 0; steps = 0 } }
+  { obstacle = {object_type = Tree; location = (100, 100)}}
 
-let obstacle_lst = [ init2 ]
 
-(*let draw_oompa = Graphics.draw_rect (fst init.oompa.location) (snd
-  init.oompa.location) 30 30*)
+type pain_init = {trees : obstacle}  
+
+let pain_init (y : int) =
+  { trees = {object_type = Tree; location = (Random.int 1000, Random.int y - 25) }}
+
+let obstacle_lst =  [init2.obstacle]
 
 let text text size color =
   Graphics.set_color color;
@@ -47,13 +50,49 @@ let rec stats (frame : Graphics.status) =
 
 let take_a_step (oompa : player) = oompa.steps <- oompa.steps + 1
 
-let rec collision (oompa : player) (obstacle_lst : init2 list) =
+let rec print_list (lst:obstacle list)= 
+  match lst with 
+  |[]-> () 
+  | h ::t -> print_endline (string_of_int (fst h.location)); print_string " "; print_list t
+
+let create_issues_2 lst =
+  match lst with 
+  |[]->  (pain_init 400).trees :: [] 
+  | h :: t -> (pain_init 400).trees :: h :: t 
+
+let create_issues_1 lst =
+  match lst with 
+  |[]->  (pain_init 0).trees :: [] 
+  | h :: t -> (pain_init 0).trees :: h :: t 
+
+  let x_lst = [|Random.int 1000; Random.int 1000;Random.int 1000;Random.int 1000;Random.int 1000|]
+  let y_lst = [|Random.int 150 - 25; Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25|]
+let create y = [|Random.int y - 25; Random.int y - 25;Random.int y - 25;Random.int y - 25;Random.int y - 25|]
+
+(*let draw_draw_obstacles (h) y lst = 
+  for x = 0 to 4 do (
+  let a_lst = create y in
+  let pain_init = { trees = {object_type = Tree; location = (x_lst.(x), a_lst.(x))}} in
+  pain_init.trees :: lst;)
+done *)
+
+(*let draw_trees lst = 
+  Graphics.set_color Graphics.red; 
+  Graphics.fill_rect (fst pain_init.trees.location) (snd pain_init.trees.location)50 50;
+
+let rec draw_obstacles (lst:obstacle list) =
+  match obstacle_lst with
+  | [] -> Graphics.draw_rect 0 0 10 10
+  | h :: t -> draw_draw_obstacles h; draw_obstacles t*)
+
+
+let rec collision (oompa : player) (lst) =
   match obstacle_lst with
   | [] -> false
   | h :: t ->
       if
-        abs (fst h.obstacle.location - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (snd h.obstacle.location - snd oompa.location)
+        abs (fst h.location - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs (snd h.location - snd oompa.location)
            <= (16 / 2) + (36 / 2)
       then true
       else false && collision oompa t
@@ -83,15 +122,16 @@ let move_oompa (oompa : player) new_input move_lst =
         else oompa.location)
   | _ -> failwith "Not a proper move"
 
-let rec start (oompa : player) lst =
+let rec start (oompa : player) (lst:obstacle list) =
   Constants.background_crossy (); 
+  (*draw_draw_obstacles obstacle_lst;*)
   (**UPDATE SCORE*)
   Graphics.moveto 800 800;
   text "Score: " 200 Graphics.black;
   Graphics.draw_string (string_of_int init.oompa.steps);
   (**OBSTACLE*)
-  Graphics.set_color Graphics.black;
-  Graphics.draw_rect 100 100 50 50;
+ (**Graphics.set_color Graphics.black;
+  Graphics.draw_rect 100 100 50 50;*)
   (**OOMPA*)
   Graphics.set_color Graphics.blue;
   Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30;
@@ -103,7 +143,7 @@ let rec start (oompa : player) lst =
   Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30;
   Graphics.set_color Graphics.black;
   Graphics.draw_rect 100 100 50 50;
-  if collision oompa lst then (State.draw_fail_screen ();
+  if collision oompa obstacle_lst then (State.draw_fail_screen ();
    State.update_state "fail";) else start oompa lst
 
 let rec get_start_input () =

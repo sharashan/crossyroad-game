@@ -1,10 +1,11 @@
 open Graphics
+open Random
 
 type background =
-  | Tree
   | River
   | Road
   | Grass
+
 
 type background_type = {
   object_type : background;
@@ -12,6 +13,7 @@ type background_type = {
 }
 
 (*Draws the background objects in the map*)
+
 
 let background_crossy () = 
   (**GRASS*)
