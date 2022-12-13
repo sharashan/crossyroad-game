@@ -15,9 +15,15 @@ let text text size color =
   Graphics.draw_string text;
   Graphics.set_text_size size
 
-let play_game init =
-  if init.game_state = Start then init.game_state = Play
-  else init.game_state = Fail
+(*let play_game init = if init.game_state = Start then init.game_state = Play
+  else init.game_state = Fail *)
+
+let draw_start_screen () =
+  Graphics.draw_rect 200 200 600 500;
+  Graphics.fill_rect 200 200 600 500;
+  Graphics.moveto 320 420;
+  Graphics.set_font "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";
+  text "Press A to start" 500 Graphics.white
 
 let draw_fail_screen () =
   Graphics.clear_graph ();
@@ -48,9 +54,9 @@ let update_state s t = t.game_state <- string_to_state s
 
 let start_to_play s t =
   if t.game_state = Start then Display.get_start_input ();
-  update_state "play" t
+  update_state "play"
 
-let set_start =
+let set_start t =
   update_state "start";
   start_to_play "play"
 

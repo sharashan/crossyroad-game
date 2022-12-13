@@ -104,12 +104,6 @@ let rec get_start_input () =
     text "Try Again" 500 Graphics.black;
     get_start_input ())
 
-let draw_start_screen () =
-  Graphics.draw_rect 200 200 600 500;
-  Graphics.fill_rect 200 200 600 500;
-  Graphics.moveto 320 420;
-  Graphics.set_font "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";
-  text "Press A to start" 500 Graphics.white
 
 let get_moves () =
   if Graphics.key_pressed () then
