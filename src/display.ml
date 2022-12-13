@@ -69,12 +69,12 @@ let create_issues_1 lst =
   let y_lst = [|Random.int 150 - 25; Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25|]
 let create y = [|Random.int y - 25; Random.int y - 25;Random.int y - 25;Random.int y - 25;Random.int y - 25|]
 
-(*let draw_draw_obstacles (h) y lst = 
+let draw_draw_obstacles (h) y lst = 
   for x = 0 to 4 do (
   let a_lst = create y in
   let pain_init = { trees = {object_type = Tree; location = (x_lst.(x), a_lst.(x))}} in
   pain_init.trees :: lst;)
-done *)
+done
 
 (*let draw_trees lst = 
   Graphics.set_color Graphics.red; 
