@@ -21,6 +21,14 @@ let grass_draw x y =
   Graphics.draw_rect x y 1000 150;
   Graphics.fill_rect x y 1000 150
 
+let road_draw x y = 
+  Graphics.draw_rect x y 1000 250;
+  Graphics.fill_rect x y 1000 250
+
+let water_draw x y = 
+  Graphics.draw_rect x y 1000 200;
+  Graphics.fill_rect x y 1000 200
+
 let background_crossy () = 
   (**GRASS*)
   Graphics.moveto 0 0;
@@ -29,8 +37,8 @@ let background_crossy () =
   (**ROAD*) 
   Graphics.moveto 0 0;
   Graphics.set_color (Graphics.rgb 96 96 96);
-  Graphics.draw_rect 0 150 1000 250;
-  Graphics.fill_rect 0 150 1000 250;
+  road_draw 0 150; 
+
   (**GRASS*)
   Graphics.moveto 0 0;
   Graphics.set_color (Graphics.rgb 102 204 0);
@@ -38,5 +46,12 @@ let background_crossy () =
   (**WATER*) 
   Graphics.moveto 0 0;
   Graphics.set_color (Graphics.rgb 102 178 255);
-  Graphics.draw_rect 0 550 1000 200;
-  Graphics.fill_rect 0 550 1000 200
+  water_draw 0 550;
+   
+  (**ROAD*) 
+   Graphics.moveto 0 0;
+   Graphics.set_color (Graphics.rgb 96 96 96);
+   road_draw 0 750; 
+  
+
+

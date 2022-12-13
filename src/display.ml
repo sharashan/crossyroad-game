@@ -89,7 +89,7 @@ let draw_obstacles h y =
   | h :: t -> draw_draw_obstacles h y; draw_obstacles t*)
 
 
-let rec collision (oompa : player) (lst) =
+let rec collision (oompa : player) (lst)=
   match obstacle_lst with
   | [] -> false
   | h :: t ->
@@ -116,24 +116,24 @@ let rec collision (oompa : player) (lst) =
         <= (16 / 2) + (36 / 2)
       then true
 else if abs (x_lst.(5) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(5) - snd oompa.location)
+        && abs (y_lst.(5)+400 - snd oompa.location)
            <= (16 / 2) + (36 / 2)
       then true
       else if 
         abs (x_lst.(6) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(6) - snd oompa.location)
+        && abs (y_lst.(6)+400 - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
       else if abs (x_lst.(7) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(7) - snd oompa.location)
+        && abs (y_lst.(7)+400 - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
       else if abs (x_lst.(8) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(8) - snd oompa.location)
+        && abs (y_lst.(8)+400 - snd oompa.location)
         <= (16 / 2) + (36 / 2)
         then true
       else if abs (x_lst.(9) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(9) - snd oompa.location)
+        && abs (y_lst.(9)+400 - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
       else false && collision oompa t
