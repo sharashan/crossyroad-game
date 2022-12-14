@@ -17,3 +17,9 @@ let get_input () =
   if Graphics.key_pressed () then
     Graphics.wait_next_event [ Graphics.Key_pressed ]
   else Graphics.wait_next_event [ Graphics.Poll ]
+
+let handle_event_init (st : State.t) =
+  let p = Graphics.wait_next_event [ Graphics.Poll ] in
+  Graphics.clear_graph ();
+  Graphics.moveto 0 0;
+  p

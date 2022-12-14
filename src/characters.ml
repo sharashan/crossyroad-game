@@ -5,6 +5,8 @@ type player = {
   speed : int;
   frame : int;
   mutable steps : int;
+  oompa_width : int;
+  oompa_height : int;
 }
 
 type obj =
@@ -34,6 +36,37 @@ type moving_ob = {
   direction : direction;
 }
 
+type t = {
+  oompa : player;
+  characters_moving : moving_ob list;
+  state : State.game_mode;
+}
+
+let car_walk_n (c : moving_ob) : unit =
+  let x, y = c.location in
+  c.location <- (x - c.speed, y)
+
+let spawn_moving_ob (l : int * int) (ob_type : moving) : moving_ob =
+  match ob_type with
+  | Log ->
+      {
+        ob_type;
+        location = l;
+        time = 0;
+        speed = 40;
+        frame = 0;
+        direction = Right;
+      }
+  | Car ->
+      {
+        ob_type;
+        location = l;
+        time = 0;
+        speed = 40;
+        frame = 0;
+        direction = Left;
+      }
+
 type car_list = { mutable hist_cars : moving_ob list }
 
 let car_width = 100
@@ -50,12 +83,12 @@ let create_car_lst (c : car_list) = { hist_cars = [] }
 let add_car (c : car_list) (car : moving_ob) = c.hist_cars <- car :: c.hist_cars
 
 (**When I initialize a car, need to call add_car to add the car to the car_list*)
-let car (ty : moving) (x : int) (y : int) (time : int) (s : int) (f : int)
+let car (ty : moving) (x : int) (y : int) (t : int) (s : int) (f : int)
     (d : direction) =
   {
     ob_type = Car;
     location = (x, y);
-    time;
+    time = t;
     speed = s;
     frame = f;
     direction = d;
