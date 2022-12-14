@@ -2,6 +2,7 @@ open OUnit2
 open Crossyroad
 open Characters
 open Display
+open Constants
 
 let check_test (name : string) (input : int) (expected_output : int) : test =
   name >:: fun _ -> assert_equal input expected_output ~printer:string_of_int
@@ -53,6 +54,7 @@ let check_tests =
         oompa_height = 50;
       };
     check_state_test "checking states" test_tree_obstacle test_tree_obstacle;
+    check_state_test "checking states" test_rock_obstacle test_rock_obstacle;
     check_state_test "checking state" test_moving_obstacle test_moving_obstacle;
   ]
 
@@ -73,6 +75,10 @@ let get_moving_obstacle (name : string) (input : Characters.moving_ob)
 
 let get_obstacle (name : string) (input : Characters.obstacle)
     (expected_output : Characters.obstacle) : test =
+  name >:: fun _ -> assert_equal expected_output input
+
+let get_gui_player (name : string) (input : player) (expected_output : player) :
+    test =
   name >:: fun _ -> assert_equal expected_output input
 
 let get_player_speed (name : string) (input : player) (expected_output : int) :
@@ -103,8 +109,21 @@ let obstacle_list = []
 let colliding_tree = { object_type = Tree; location = (10, 0) }
 let non_collision_list = [ test_rock_obstacle ]
 let collision_list = [ colliding_tree ]
+let colliding_car_list = []
 
-let check_collision (name : string) (input : 'a list)
+let colliding_car =
+  {
+    ob_type = Car;
+    location = (10, 0);
+    time = 10;
+    speed = 11;
+    frame = 12;
+    direction = Right;
+  }
+
+let colliding_car_list = [ colliding_car ]
+
+let check_collision (name : string) (input : obstacle list)
     (second_input : Characters.player) (expected_output : bool) : test =
   name >:: fun _ ->
   assert_equal expected_output (Display.collision second_input input)
@@ -136,6 +155,13 @@ let get_gui_moving_direction (name : string) (input : moving_ob)
     (expected_output : direction) : test =
   name >:: fun _ -> assert_equal expected_output input.direction
 
+let get_background (name : string) (input : background_type)
+    (expected_output : background) : test =
+  name >:: fun _ -> assert_equal expected_output input.back_type
+
+let back_river_create = { back_type = River; location = (100, 100) }
+let back_grass_create = { back_type = Grass; location = (200, 100) }
+
 let gui_tests =
   let oompa =
     {
@@ -159,6 +185,8 @@ let gui_tests =
     }
   in
   [
+    get_background "check background types" back_river_create River;
+    get_background "check background types" back_grass_create Grass;
     oompa_walk_test "oompa walking" oompa { oompa with location = (10, 0) };
     get_steps "testing steps" oompa 1;
     get_player_speed "testing speed" oompa 0;
@@ -174,6 +202,9 @@ let gui_tests =
     get_gui_moving_speed "testing moving obstacle speed" gui_car 11;
     get_gui_moving_frame "testing moving obstacle frame" gui_car 12;
     get_gui_moving_direction "testing moving obstacle direction" gui_car Right;
+    get_gui_player "testing player width" oompa { oompa with oompa_width = 75 };
+    get_gui_player "testing player height" oompa
+      { oompa with oompa_height = 80 };
     get_moving_obstacle "checking type of moving obstacle" test_moving_obstacle
       { test_moving_obstacle with ob_type = Car };
     get_moving_obstacle "checking location of moving obstacle"
