@@ -183,11 +183,9 @@ let create_issues_2 lst =
     else x 
 
 let draw_draw_obstacles st h y = 
-          for x = 0 to 4 do (
-            Graphics.set_color Graphics.red; 
-            Graphics.draw_image st.images.trees ((map check_x x_lst).(x)) ((map check_y1 y_lst).(x))
-           (* Graphics.fill_rect ((map check_x x_lst).(x)) ((map check_y1 y_lst).(x)) tree_w_int tree_h_int;*)) done
-    
+    for x = 0 to 4 do (
+      Graphics.set_color Graphics.red; 
+      Graphics.draw_image st.images.trees ((map check_x x_lst).(x)) ((map check_y1 y_lst).(x))) done 
 
 let draw_obstacles st h y = 
   for x = 0 to 4 do (
