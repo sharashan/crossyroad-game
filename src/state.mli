@@ -26,7 +26,6 @@ type t = {
   arrow_pressed : bool;
 }
 
-
 val text : string -> int -> int -> unit
 
 (*[draw_start_screen] draws the start_screen when the record field game_state

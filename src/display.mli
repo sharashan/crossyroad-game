@@ -90,13 +90,44 @@ val create_issues_1 : Characters.obstacle list -> Characters.obstacle list
 val create_issues_2 : Characters.obstacle list -> Characters.obstacle list
 val create_issues_3 : Characters.obstacle list -> Characters.obstacle list
 
-(*[x_lst] stores the values of the x-coordinates of all the obstacles. It stores
- the randomly generated integers. The size of the array is 15 *)
+(*[x_lst] stores the values of the x-coordinates of the first set of trees. It
+ stores the randomly generated integers. The size of the array is 5 *)
 val x_lst : int array
 
-(*[y_lst] stores the values of the y-coordinates of all the obstacles. It stores
- the randomly generated integers. The size of the array is 15 *)
+(*[x_lst2] stores the values of the x-coordinates of the second set of trees. It 
+stores the randomly generated integers. The size of the array is 5 *)
+val x_lst2 : int array
+
+(*[x_lst3] stores the values of the x-coordinates of the set of rocks. It 
+stores the randomly generated integers. The size of the array is 5 *)
+val x_lst3 : int array
+
+(*[map f lst] applies f to every element in lst*)
+val map : ('a->'b) -> 'a array -> 'b array 
+
+(*[y_lst] stores the values of the y-coordinates of the first set of trees. It 
+stores the randomly generated integers. The size of the array is 5 *)
 val y_lst : int array
+
+(*[y_lst2] stores the values of the y-coordinates of the second set of trees. It 
+stores the randomly generated integers. The size of the array is 5 *)
+val y_lst2 : int array
+
+(*[y_lst3] stores the values of the y-coordinates of the set of rocks. It 
+stores the randomly generated integers. The size of the array is 5 *)
+val y_lst3 : int array
+
+(*[check_y1 x] checks if the set of y-coordinates for the first set of trees
+   stay within the bounds of the first patch of grass*)
+val check_y1 : int -> int 
+
+(*[check_y2 x] checks if the set of y-coordinates for the second set of trees
+   stay within the bounds of the second patch of grass*)
+val check_y2 : int -> int 
+
+(*[check_y3 x] checks if the set of y-coordinates for the set of rocks
+   stay within the bounds of the water*)
+val check_y3 : int -> int 
 
 (*[draw_draw_obstacles h y] iteratively draws five trees in random coordinates
 in the first patch of grass. [y] representes the dy that needs to be added to 
@@ -116,6 +147,28 @@ the randomly generated y-coordinates to place the rocks within the width of the
 water*)
 val draw_rocks : 'a -> int -> unit
 
+(*[draw_score] is the helper that [start] calls on to draw the score*)
+val draw_score : unit -> unit 
+
+(*[draw_oompa] is the helper that [start] calls on to draw the main player*)
+val draw_oompa : unit -> unit 
+
+(*[draw_background] is the helper that [start] calls on to draw the background
+   elements, like the obstacles*)
+val draw_background : unit -> unit 
+
+(*[update_car_1] draws the first car in its defined coordinates*)
+val update_car_1 : unit -> unit
+
+(*[update_car_2] draws the first car in its defined coordinates*)
+val update_car_2 : unit -> unit
+
+(*[update_car_3] draws the first car in its defined coordinates*)
+val update_car_3 : unit -> unit
+
+val collision_car: Characters.player -> Characters.moving_ob -> 
+   Characters.moving_ob list -> bool 
+
 (*[collision oompa lst] returns true if [oompa], the main player, collides with
    any of the obstacles in the game board. This calculates if there is an 
   overlap between the coordinates of [oompa] and each tree and rock in the
@@ -125,6 +178,11 @@ val draw_rocks : 'a -> int -> unit
     x-coordinate of a tree is less than the distance between each of their 
   midpoints, they will collide, and [collide] will return true*)
 val collision : Characters.player -> Characters.obstacle list -> bool
+
+(*[reach_top oompa] returns true if the main player reaches the other side of 
+   the game board (i.e. the greatest y-coordinate). This means they have won the 
+game, so state is updated and the appropriate screen is executed.*)
+val reach_top : Characters.player -> bool
 
 (*[move_oompa oompa new_input move_lst] implements the action required by the 
 input key pressed by the user. It uses keys 'a', 'w', 's', and 'd' to represent
