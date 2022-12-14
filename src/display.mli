@@ -30,6 +30,8 @@ type input = {
   mouse_down : bool;
 }
 
+type l
+
 (*The type that initializes a main player. This is the player whose moves 
    are being controlled by the user*)
 type init = { mutable oompa : Characters.player }
@@ -100,7 +102,7 @@ val y_lst : int array
 in the first patch of grass. [y] representes the dy that needs to be added to 
 the randomly generated y-coordinates to place the trees in the right patch of 
 grass*)
-val draw_draw_obstacles : 'a -> int -> unit
+val draw_draw_obstacles : l -> 'a -> 'b -> unit
 
 (*[draw_obstacles h y] iteratively draws five trees in random coordinates
 in the second patch of grass. [y] representes the dy that needs to be added to 

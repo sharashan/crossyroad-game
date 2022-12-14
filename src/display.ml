@@ -1,6 +1,7 @@
 open Graphics
 open Characters
 open Constants
+open Images 
 
 type color = {
   r : int;
@@ -33,6 +34,23 @@ type init = { mutable oompa : player }
 type init2 = { mutable obstacle : obstacle }
 type init3 = {mutable rock: obstacle}
 
+type gui_images = { 
+  oompa_loompa : Graphics.image;
+  trees:Graphics.image
+}
+
+type l = {
+  images : gui_images
+}
+
+let init_l () = 
+  {
+    images = {
+      oompa_loompa = Image.to_image (Png.load "images/oompa_loompa.png" []) 0 0 0;
+      trees = Image.to_image (Png.load "images/cotton_candy.png" []) 0 0 0;
+    }
+  }
+
 let _ = Random.self_init()
 
 let init = { oompa = { location = (500, 30); speed = 0; frame = 0; steps = 0; oompa_width = 30; oompa_height = 30 } }
@@ -56,6 +74,7 @@ let init_car_list = {hist_cars = []}
 type pain_init = {trees : obstacle}  
 
 type rock_init = {rocks: obstacle}
+
 
 let pain_init (y : int) =
   { trees = {object_type = Tree; location = (Random.int 1000, Random.int 150 + y) }}
@@ -104,8 +123,7 @@ let create_issues_2 lst =
   let x_lst2 = [|Random.int 1000; Random.int 1000;Random.int 1000;
   Random.int 1000;Random.int 1000|]
 
-  let x_lst3 = [|Random.int 1000; Random.int 1000;
-  Random.int 1000;Random.int 1000;Random.int 1000|]
+  let x_lst3 = [|Random.int 1000; Random.int 1000; Random.int 1000;Random.int 1000;Random.int 1000|]
 
   let check_x x = 
     if x < 100 then x + 50 
@@ -149,10 +167,11 @@ let create_issues_2 lst =
     else if x >= 700 then  x - 50
     else x 
 
-let draw_draw_obstacles h y = 
+let draw_draw_obstacles st h y = 
           for x = 0 to 4 do (
             Graphics.set_color Graphics.red; 
-            Graphics.fill_rect ((map check_x x_lst).(x)) ((map check_y1 y_lst).(x)) tree_w_int tree_h_int;) done
+            Graphics.draw_image st.images.trees ((map check_x x_lst).(x)) ((map check_y1 y_lst).(x))
+            (*Graphics.fill_rect ((map check_x x_lst).(x)) ((map check_y1 y_lst).(x)) tree_w_int tree_h_int;*)) done
     
 
 let draw_obstacles h y = 
@@ -169,17 +188,17 @@ let draw_score () =
   Graphics.moveto 750 800;
   text "Score: " 200 Graphics.black;
   Graphics.draw_string (string_of_int init.oompa.steps)
-
-let draw_oompa () = 
+  
+let draw_oompa st () = 
   Graphics.set_color Graphics.blue;
-  Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30
+  Graphics.draw_image st.images.oompa_loompa (fst init.oompa.location) (snd init.oompa.location) 
 
 let draw_collision () = 
   Graphics.set_color Graphics.black;
   Graphics.draw_rect 100 100 50 50
 
-let draw_background () = 
-  draw_draw_obstacles obstacle_lst 0;
+let draw_background st () = 
+  draw_draw_obstacles st obstacle_lst 0;
   draw_obstacles obstacle_lst 400;
   draw_rocks rock_lst 600;
   (**UPDATE SCORE*)
@@ -319,19 +338,19 @@ let rec start (oompa : player) (lst:obstacle list) =
   update_car (); 
   update_car_2(); 
   update_car_3();
-  draw_draw_obstacles obstacle_lst 0;
+  draw_draw_obstacles (init_l ()) obstacle_lst 0;
   draw_obstacles obstacle_lst 0;
   draw_rocks rock_lst 0; 
   (**UPDATE SCORE*)
   draw_score ();
   (**OOMPA*)
-  draw_oompa (); 
+  draw_oompa (init_l ())  (); 
   let input_2 = Graphics.read_key () in
   move_oompa init.oompa input_2 [];
   Graphics.moveto (fst init.oompa.location) (snd init.oompa.location);
   Graphics.clear_graph ();
   (**REDRAW GRAPHICS*)
-  draw_oompa ();
+  draw_oompa (init_l ())  ();
   if collision oompa obstacle_lst || collision_car oompa init_car init_car_list.hist_cars || collision_car oompa init_car_3 init_car_list.hist_cars || collision_car oompa init_car_2 init_car_list.hist_cars then (State.draw_fail_screen ();   State.update_state "fail";) else if reach_top oompa then (State.draw_win_screen (); 
    State.update_state "win";)
   else start oompa lst 
