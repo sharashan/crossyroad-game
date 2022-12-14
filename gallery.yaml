@@ -21,12 +21,10 @@ git-repo: "https://github.coecis.cornell.edu/svs45/crossyroadoompa.git"
 demo-video-url: ""
 # Write a short, attention-grabbing description of your project.
 desc: >
-  Our project is recreating the game Crossy Road. It uses graphics and arrow 
+  Our project is recreating the game Crossy Road. It uses graphics and letter 
   keys to move the character around on the screen. The main objective is to get
-  the highest possible score (i.e. how many steps the character takes) without
-  dying. The interface can be programmable if the user wishes to change difficulty
-  levels of the speed of the objects and how many lives the user can have to continue 
-  their run before getting the final score.
+  to the top of the screen (i.e. the maximum number of steps the character takes) 
+  without dying. The interface can be programmable if the user wishes to change 
+  the number of obstacles present or the size of them.
 
-  Standard visual I/O is supported, but the game can also emit sound 
-  when the character dies.
+  Standard visual I/O is supported.

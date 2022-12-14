@@ -19,6 +19,11 @@ type input = {
   mouse_down : bool;
 }
 
+type row = {
+  mutable cars : moving_ob list; 
+}
+let init_row = { cars = []; }
+
 type t = {
   key_press : char;
   moves_list : input list;
@@ -28,13 +33,24 @@ type init = { mutable oompa : player }
 type init2 = { mutable obstacle : obstacle }
 type init3 = {mutable rock: obstacle}
 
-let init = { oompa = { location = (50, 50); speed = 0; frame = 0; steps = 0 } }
+let init = { oompa = { location = (50, 50); speed = 0; frame = 0; steps = 0; oompa_width = 30; oompa_height = 30 } }
 
 let init2 =
   { obstacle = {object_type = Tree; location = (100, 100)}}
 
 let init3 = {rock = {object_type = Rock; location = (100,650)}}
 
+let init_car = car Car 0 250 0 30 0 Right 
+let init_car_2 = car Car 750 300 0 30 0 Left 
+
+let init_car_3 = car Car 750 800 0 30 0 Left 
+
+let move_lst = [init_car; init_car_2]
+
+let init_t = { oompa = init.oompa; characters_moving = move_lst; state = Play}
+
+
+let init_car_list = {hist_cars = []}
 
 type pain_init = {trees : obstacle}  
 
@@ -80,37 +96,141 @@ let create_issues_1 lst =
     |[]->  rock_init.rocks :: [] 
     | h :: t -> rock_init.rocks :: h :: t 
 
-  let x_lst = [|Random.int 1000; Random.int 1000;Random.int 1000;Random.int 1000
-  ;Random.int 1000;Random.int 1000; Random.int 1000;Random.int 1000;
-  Random.int 1000;Random.int 1000;Random.int 1000; Random.int 1000;
+  let _ = Random.self_init()
+
+
+    let tree_h_int = int_of_float Constants.tree_height
+  let rock_h_int = int_of_float Constants.rock_height
+  let tree_w_int = int_of_float Constants.tree_width
+  let rock_w_int = int_of_float Constants.rock_width
+
+  let x_lst = [|Random.int 1000; Random.int 1000;Random.int 1000;Random.int 1000; Random.int 1000|]
+  
+  let x_lst2 = [|Random.int 1000; Random.int 1000;Random.int 1000;
+  Random.int 1000;Random.int 1000|]
+
+  let x_lst3 = [|Random.int 1000; Random.int 1000;
   Random.int 1000;Random.int 1000;Random.int 1000|]
-  let y_lst = [|Random.int 150 - 25; Random.int 150 - 25;Random.int 150 - 25;
-  Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25; 
-  Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25;
-  Random.int 150 - 25;Random.int 200 - 15;Random.int 200 - 15;
-  Random.int 200 - 15;Random.int 200 - 15;Random.int 200 - 15|]
 
-let draw_draw_obstacles (h) y = 
-  for x = 0 to 4 do (
-  Graphics.set_color Graphics.red; 
-  Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))) 50 50;) done
+  let check_x x = 
+    if x < 100 then x + 50 
+    else if x > 900 then  x - 50
+    else if x = 50 then x + 50
+    else x 
 
-let draw_obstacles h y = 
-  for x = 5 to 9 do (
-    Graphics.set_color Graphics.red; 
-    Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))+y) 50 50;) done
+  let map f lst = Array.map f lst
+  let constant_y = 0
 
-let draw_rocks h y = 
-  for x = 10 to 14 do (
-    Graphics.set_color (Graphics.rgb 102 204 0) ; 
-    Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))+y) 30 30;) done
+  let y_lst = [|Random.int 150; Random.int 150;Random.int 150;
+  Random.int 150;Random.int 150|] (*;Random.int 150; 
+  Random.int 150;Random.int 150;Random.int 150;
+  Random.int 150;Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2;
+  Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2|] *)
+
+  let y_lst2 = [|Random.int 550; 
+  Random.int 550;Random.int 550;Random.int 550;
+  Random.int 550|]
+
+  let y_lst3 = [|Random.int 750 ;Random.int 750 ;
+  Random.int 750 ;Random.int 750 ;Random.int 750 |]
+
+  let check_y1 x = 
+    if x < 50 then x + 50 
+    else if x >= 100 then  x - 50
+    else if x = 50 then x + 50
+    else x 
+
+   let check_y2 x = 
+    if x < 100 then x + 400 
+    else if x < 200 then x + 300
+    else if x < 300 then x + 200
+   else if x < 400 then x + 100
+    else if x >= 500 then  x - 50
+    else x 
+
+  let check_y3 x = 
+    if x < 100 then x + 600 
+    else if x < 200 then x + 500
+    else if x < 300 then x + 400
+   else if x < 400 then x + 300
+   else if x < 500 then x + 200
+   else if x < 600 then x + 100
+    else if x >= 700 then  x - 50
+    else x 
 
   
 
-(*let rec draw_obstacles (lst:obstacle list) =
-  match obstacle_lst with
-  | [] -> Graphics.draw_rect 0 0 10 10
-  | h :: t -> draw_draw_obstacles h y; draw_obstacles t*)
+  (*let tree_list = []
+  let rec tree_lst x_lst y_lst = 
+    match x_lst with 
+    |[] -> []
+    | h :: t -> 
+      match y_lst with 
+      |[] -> []
+      |a::b ->  *)
+
+
+ (* let rec draw_draw_obstacles (lst:pain_init list) y = 
+        match lst with 
+        |[] -> []
+        | h::t -> Constants.tree_draw (fst h.location) (snd h.location+ y); *)
+
+let draw_draw_obstacles h y = 
+          for x = 0 to 4 do (
+            Graphics.set_color Graphics.red; 
+            Graphics.fill_rect ((map check_x x_lst).(x)) ((map check_y1 y_lst).(x)) tree_w_int tree_h_int;) done
+      
+(*let spawn_car  = 
+  let new_car = Characters.spawn_moving_ob 200 Car in
+  init_row.cars <- new_car :: init_row.cars*)
+
+let draw_obstacles h y = 
+  for x = 0 to 4 do (
+    Graphics.set_color Graphics.red; 
+    Graphics.fill_rect ((map check_x x_lst2).(x)) ((map check_y2 y_lst2).(x)) tree_w_int tree_h_int;) done
+
+let draw_rocks h y = 
+  for x = 0 to 4 do (
+    Graphics.set_color (Graphics.rgb 102 204 0) ; 
+    Graphics.fill_rect ((map check_x x_lst3).(x)) ((map check_y3 y_lst3).(x)) rock_w_int rock_h_int;) done 
+
+let draw_score () = 
+  Graphics.moveto 800 800;
+  text "Score: " 200 Graphics.black;
+  Graphics.draw_string (string_of_int init.oompa.steps)
+
+let draw_oompa () = 
+  Graphics.set_color Graphics.blue;
+  Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30
+
+let draw_collision () = 
+  Graphics.set_color Graphics.black;
+  Graphics.draw_rect 100 100 50 50
+
+let draw_background () = 
+  draw_draw_obstacles obstacle_lst 0;
+  draw_obstacles obstacle_lst 400;
+  draw_rocks rock_lst 600;
+  (**UPDATE SCORE*)
+  draw_score ()
+
+let rec update_car () = 
+  Graphics.set_color Graphics.white;
+  Graphics.draw_rect (fst init_car.location)(snd init_car.location) car_width car_height; 
+  add_car init_car_list init_car;
+  add_car init_car_list init_car_2;
+  updateCar init_car init_car_list.hist_cars 5 
+
+let update_car_2 () = 
+  Graphics.set_color Graphics.white;
+  Graphics.draw_rect (fst init_car.location)(snd init_car.location) car_width car_height; 
+  add_car init_car_list init_car_3;
+  updateCar init_car init_car_list.hist_cars 5
+
+(*let dist_midpoint_x oompa_width tree_width =  oompa_width/2 + tree_width/2;
+
+let dist_midpoint_y oompa_height tree_height= oompa_height/2 + tree_height/2*)
+
 
 
 let rec collision (oompa : player) (lst)=
@@ -118,70 +238,73 @@ let rec collision (oompa : player) (lst)=
   | [] -> false
   | h :: t ->
       if
-        abs (x_lst.(0) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(0) - snd oompa.location)
+        abs ((map check_x x_lst).(0) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y1 y_lst).(0) - snd oompa.location)
            <= (16 / 2) + (36 / 2)
       then true
       else if 
-        abs (x_lst.(1) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(1) - snd oompa.location)
+        abs ((map check_x x_lst).(1) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y1 y_lst).(1) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
-      else if abs (x_lst.(2) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(2) - snd oompa.location)
+      else if abs ((map check_x x_lst).(2) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y1 y_lst).(2) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
-      else if abs (x_lst.(3) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(3) - snd oompa.location)
+      else if abs ((map check_x x_lst).(3) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y1 y_lst).(3) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
         then true
-      else if abs (x_lst.(4) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(4) - snd oompa.location)
+      else if abs ((map check_x x_lst).(4) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y1 y_lst).(4) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
-else if abs (x_lst.(5) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(5)+400 - snd oompa.location)
+      else if abs ((map check_x x_lst2).(0) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y2 y_lst2).(0) - snd oompa.location)
            <= (16 / 2) + (36 / 2)
       then true
       else if 
-        abs (x_lst.(6) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(6)+400 - snd oompa.location)
+        abs ((map check_x x_lst2).(1) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y2 y_lst2).(1) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
-      else if abs (x_lst.(7) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(7)+400 - snd oompa.location)
+      else if abs ((map check_x x_lst2).(2) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y2 y_lst2).(2) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
-      else if abs (x_lst.(8) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(8)+400 - snd oompa.location)
+      else if abs ((map check_x x_lst2).(3) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y2 y_lst2).(3) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
         then true
-      else if abs (x_lst.(9) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(9)+400 - snd oompa.location)
+      else if abs ((map check_x x_lst2).(4) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y2 y_lst2).(4) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
-    else if abs (x_lst.(10) - fst oompa.location) <= (16 / 2) + (36 / 2)
-      && abs (y_lst.(10)+600 - snd oompa.location)
+      
+    else if abs ((map check_x x_lst3).(0) - fst oompa.location) <= (16 / 2) + (36 / 2)
+      && abs ((map check_y3 y_lst3).(0) - snd oompa.location)
          <= (16 / 2) + (36 / 2)
     then true
     else if 
-      abs (x_lst.(11) - fst oompa.location) <= (16 / 2) + (36 / 2)
-      && abs (y_lst.(11)+600 - snd oompa.location)
+      abs ((map check_x x_lst3).(1) - fst oompa.location) <= (16 / 2) + (36 / 2)
+      && abs ((map check_y3 y_lst3).(1)- snd oompa.location)
       <= (16 / 2) + (36 / 2)
     then true
-    else if abs (x_lst.(12) - fst oompa.location) <= (16 / 2) + (36 / 2)
-      && abs (y_lst.(12)+600 - snd oompa.location)
+    else if abs ((map check_x x_lst3).(2) - fst oompa.location) <= (16 / 2) + (36 / 2)
+      && abs ((map check_y3 y_lst3).(2) - snd oompa.location)
       <= (16 / 2) + (36 / 2)
     then true
-    else if abs (x_lst.(13) - fst oompa.location) <= (16 / 2) + (36 / 2)
-      && abs (y_lst.(13)+600 - snd oompa.location)
+    else if abs ((map check_x x_lst3).(3) - fst oompa.location) <= (16 / 2) + (36 / 2)
+      && abs ((map check_y3 y_lst3).(3) - snd oompa.location)
       <= (16 / 2) + (36 / 2)
       then true
-    else if abs (x_lst.(14) - fst oompa.location) <= (16 / 2) + (36 / 2)
-      && abs (y_lst.(14)+600 - snd oompa.location)
+    else if abs ((map check_x x_lst3).(4) - fst oompa.location) <= (16 / 2) + (36 / 2)
+      && abs ((map check_y3 y_lst3).(4)- snd oompa.location)
       <= (16 / 2) + (36 / 2)
-    then true
+    then true 
       else false && collision oompa t
+
+  let reach_top (oompa:player) = if snd oompa.location > 850 then true else false
 
 let move_oompa (oompa : player) new_input move_lst =
   match new_input with
@@ -208,31 +331,31 @@ let move_oompa (oompa : player) new_input move_lst =
         else oompa.location)
   | _ -> failwith "Not a proper move"
 
+(**let tick init (st :State.t) = 
+  st.timer <- st.timer + 1; 
+  List.iter (fun row -> row.cars |> List.iter Characters.car_walk_n)**)
+
 let rec start (oompa : player) (lst:obstacle list) =
   Constants.background_crossy (); 
+  update_car (); 
+  update_car_2(); 
   draw_draw_obstacles obstacle_lst 0;
-  draw_obstacles obstacle_lst 400;
-  draw_rocks rock_lst 600;
+  draw_obstacles obstacle_lst 0;
+  draw_rocks rock_lst 0; 
   (**UPDATE SCORE*)
-  Graphics.moveto 800 800;
-  text "Score: " 200 Graphics.black;
-  Graphics.draw_string (string_of_int init.oompa.steps);
-  (**OBSTACLE*)
- (**Graphics.set_color Graphics.black;
-  Graphics.draw_rect 100 100 50 50;*)
+  draw_score ();
   (**OOMPA*)
-  Graphics.set_color Graphics.blue;
-  Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30;
+  draw_oompa (); 
   let input_2 = Graphics.read_key () in
   move_oompa init.oompa input_2 [];
   Graphics.moveto (fst init.oompa.location) (snd init.oompa.location);
   Graphics.clear_graph ();
   (**REDRAW GRAPHICS*)
-  Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30;
-  Graphics.set_color Graphics.black;
-  Graphics.draw_rect 100 100 50 50;
+  draw_oompa ();
   if collision oompa obstacle_lst then (State.draw_fail_screen ();
-   State.update_state "fail";) else start oompa lst
+   State.update_state "fail";) else if reach_top oompa then (State.draw_win_screen (); 
+   State.update_state "win";)
+  else start oompa lst 
 
 let rec get_start_input () =
   let input = Graphics.read_key () in
@@ -243,6 +366,7 @@ let rec get_start_input () =
    (** Graphics.moveto 750 720;
     text "Score: " 150 Graphics.black;
     Graphics.draw_string (string_of_int init.oompa.steps);**)
+    tick init_t;
     start init.oompa obstacle_lst)
   else (
     Graphics.clear_graph ();
@@ -253,4 +377,4 @@ let rec get_start_input () =
 let get_moves () =
   if Graphics.key_pressed () then
     Graphics.wait_next_event [ Graphics.Key_pressed ]
-  else Graphics.wait_next_event [ Graphics.Poll ]
+  else Graphics.wait_next_event [ Graphics.Poll ] 
