@@ -68,10 +68,6 @@ let get_gui_obstacle_type (name : string) (input : obstacle)
     (expected_output : obj) : test =
   name >:: fun _ -> assert_equal expected_output input.object_type
 
-let get_gui_obstacle_type (name : string) (input : obstacle)
-    (expected_output : obj) : test =
-  name >:: fun _ -> assert_equal expected_output input.object_type
-
 let obstacle_list = []
 let colliding_tree = { object_type = Tree; location = (10, 0) }
 let non_collision_list = [ test_rock_obstacle ]
@@ -82,15 +78,60 @@ let check_collision (name : string) (input : 'a list)
   name >:: fun _ ->
   assert_equal expected_output (Display.collision second_input input)
 
+let get_gui_obstacle_type (name : string) (input : obstacle)
+    (expected_output : obj) : test =
+  name >:: fun _ -> assert_equal expected_output input.object_type
+
+let get_gui_moving_obs_type (name : string) (input : moving_ob)
+    (expected_output : moving) : test =
+  name >:: fun _ -> assert_equal expected_output input.ob_type
+
+let get_gui_moving_time (name : string) (input : moving_ob)
+    (expected_output : int) : test =
+  name >:: fun _ ->
+  assert_equal expected_output input.time ~printer:string_of_int
+
+let get_gui_moving_speed (name : string) (input : moving_ob)
+    (expected_output : int) : test =
+  name >:: fun _ ->
+  assert_equal expected_output input.speed ~printer:string_of_int
+
+let get_gui_moving_frame (name : string) (input : moving_ob)
+    (expected_output : int) : test =
+  name >:: fun _ ->
+  assert_equal expected_output input.frame ~printer:string_of_int
+
+let get_gui_moving_direction (name : string) (input : moving_ob)
+    (expected_output : direction) : test =
+  name >:: fun _ -> assert_equal expected_output input.direction
+
 let gui_tests =
   let oompa = { location = (10, 0); speed = 0; frame = 0; steps = 1 } in
   let gui_tree = { object_type = Tree; location = (50, 50) } in
+  let gui_car =
+    {
+      ob_type = Car;
+      location = (100, 100);
+      time = 10;
+      speed = 11;
+      frame = 12;
+      direction = Right;
+    }
+  in
   [
     oompa_walk_test "oompa walking" oompa { oompa with location = (10, 0) };
     get_steps "testing steps" oompa 1;
     get_player_speed "testing speed" oompa 0;
     get_player_speed "testing frame" oompa 0;
-    get_gui_obstacle_type "testing obstacle type" gui_tree Tree;
+    get_gui_obstacle_type
+      "testing obstacle type with newly created tree implemented in different \
+       location"
+      gui_tree Tree;
+    get_gui_moving_obs_type "testing moving obstacle type" gui_car Car;
+    get_gui_moving_time "testing moving obstacle time" gui_car 10;
+    get_gui_moving_speed "testing moving obstacle speed" gui_car 11;
+    get_gui_moving_frame "testing moving obstacle frame" gui_car 12;
+    get_gui_moving_direction "testing moving obstacle direction" gui_car Right;
     get_moving_obstacle_type "checking type of moving obstacle"
       test_moving_obstacle
       { test_moving_obstacle with ob_type = Car };
