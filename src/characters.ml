@@ -63,6 +63,7 @@ let update_game_state (map : t) =
     | Start -> State.Start
     | Fail -> State.Fail
     | Pause -> State.Pause
+    | Win -> State.Win
     | Play -> (
         let collision = check_coll map.oompa.location map.characters_moving in
         match collision with
@@ -74,7 +75,7 @@ let update_game_state (map : t) =
 
 let tick (map : t) =
   match map.state with
-  | Fail | Start | Pause -> map
+  | Fail | Start | Pause | Win -> map
   | Play ->
       let update_moving_object (c : moving_ob) =
         let new_position = fst c.location + c.speed in

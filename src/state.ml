@@ -23,8 +23,7 @@ let draw_start_screen () =
   Graphics.draw_rect 200 200 600 500;
   Graphics.fill_rect 200 200 600 500;
   Graphics.moveto 320 420;
-  (*Graphics.set_font
-    "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";*)
+  Graphics.set_font "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";
   text "Press A to start" 500 Graphics.white
 
 let draw_fail_screen () =
@@ -32,8 +31,7 @@ let draw_fail_screen () =
   Graphics.fill_rect 200 200 600 500;
   Graphics.draw_rect 200 200 600 500;
   Graphics.moveto 320 420;
-  (*Graphics.set_font
-    "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";*)
+  Graphics.set_font "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";
   text "lmaoo You Lost :(" 500 Graphics.white
 
 let draw_win_screen () =
