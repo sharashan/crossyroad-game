@@ -42,8 +42,8 @@ type t = {
 
 type e = Tick
 
-(*[car_walk_n c] decrements the x-coordinate of the location of c by the speed
-  of c*)
+(** [car_walk_n c] decrements the x-coordinate of the location of c by the speed
+    of c *)
 let car_walk_n (c : moving_ob) : unit =
   let x, y = c.location in
   c.location <- (x - c.speed, y)

@@ -216,6 +216,17 @@ let get_background (name : string) (input : background_type)
 
 let back_river_create = { back_type = River; location = (100, 100) }
 let back_grass_create = { back_type = Grass; location = (200, 100) }
+let spawn_car = Characters.spawn_moving_ob (10, 10) Car
+
+let check_spawn_car =
+  {
+    ob_type = Car;
+    location = (10, 10);
+    time = 0;
+    speed = 40;
+    frame = 0;
+    direction = Left;
+  }
 
 let gui_tests =
   let oompa =
@@ -299,6 +310,18 @@ let gui_tests =
       "checking collision with non-empty list so but not colliding so it \
        returns false"
       non_collision_list oompa false;
+    get_moving_obstacle "checking type of moving obstacle" spawn_car
+      { check_spawn_car with ob_type = Car };
+    get_moving_obstacle "checking location of moving obstacle" spawn_car
+      { check_spawn_car with location = (10, 10) };
+    get_moving_obstacle "checking time of moving obstacle" spawn_car
+      { check_spawn_car with time = 0 };
+    get_moving_obstacle "checking speed of moving obstacle" spawn_car
+      { check_spawn_car with speed = 40 };
+    get_moving_obstacle "checking frame of moving obstacle" spawn_car
+      { check_spawn_car with frame = 0 };
+    get_moving_obstacle "checking direction of moving obstacle" spawn_car
+      { check_spawn_car with direction = Left };
   ]
 
 let test_string_to_state (name : string) (input : string)
