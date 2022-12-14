@@ -9,7 +9,7 @@ type background =
 
 
 type background_type = {
-  object_type : background;
+  back_type : background;
   location : int * int;
 }
 
@@ -26,7 +26,7 @@ let rock_width = 30.
 let rock_height = 30.
 
 let grass y ={
-  object_type = Grass; location = (0,y); 
+  back_type = Grass; location = (0,y); 
 }
 
 let grass_draw x y = 

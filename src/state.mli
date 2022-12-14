@@ -15,6 +15,8 @@ type game_mode =
   | Fail
   | Win 
 
+type images
+
 (*The abstract type that represents the player's key and mouse inputs and a 
    mutable field game_state that represents which mode the game is in (this 
    has type game_mode)*)
