@@ -31,9 +31,7 @@ type obstacle = {
 (*The obstacle type represents the non-moving obstacles of the game and it also
   includes a record field defining their location*)
 
-type moving =
-  | Log
-  | Car
+type moving = Car
 (*The moving type represents the moving objects/obstacles. In this game, it is a
   car*)
 
@@ -83,7 +81,8 @@ val tick : t -> t
   map is set to Play. The x-coordinate is incremented by the speed*)
 
 val handle_event : t -> e -> t
-(*[handle_event map event]*)
+(*[handle_event map event] applies tick to each event passed in, so that the
+  events are properly changed by tick *)
 
 val spawn_moving_ob : int * int -> moving -> moving_ob
 (*[spawn_moving_ob l ob ] sets the record fields for a new moving object. l is

@@ -19,9 +19,7 @@ type obstacle = {
   location : int * int;
 }
 
-type moving =
-  | Log
-  | Car
+type moving = Car
 
 type direction =
   | Right
@@ -95,15 +93,6 @@ let handle_event map (event : e) =
 
 let spawn_moving_ob (l : int * int) (ob_type : moving) : moving_ob =
   match ob_type with
-  | Log ->
-      {
-        ob_type;
-        location = l;
-        time = 0;
-        speed = 40;
-        frame = 0;
-        direction = Right;
-      }
   | Car ->
       {
         ob_type;
