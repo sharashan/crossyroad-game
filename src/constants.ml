@@ -19,10 +19,13 @@ let oompa_width = 50.
 (*player height*)
 let oompa_height  = 50.
 
+(*tree width*)
 let tree_width = 70.
 
+(*tree height*)
 let tree_height = 70.
 
+(*rock width*)
 let rock_width = 41.
 
 (*rock height*)
@@ -57,16 +60,16 @@ let tree_draw x y =
 (*[background_crossy] calls on the draw helpers above to draw the grass, road,
    and water*)
   let background_crossy () = 
-  (**GRASS*)
+  (**GRASS1*)
   Graphics.moveto 0 0;
   Graphics.set_color (Graphics.rgb 51 102 0);
   grass_draw 0 0;
-  (**ROAD*) 
+  (**ROAD1*) 
   Graphics.moveto 0 0;
   Graphics.set_color (Graphics.rgb 229 215 158);
   road_draw 0 150; 
 
-  (**GRASS*)
+  (**GRASS2*)
   Graphics.moveto 0 0;
   Graphics.set_color (Graphics.rgb 51 102 0);
   grass_draw 0 400;
@@ -75,7 +78,7 @@ let tree_draw x y =
   Graphics.set_color (Graphics.rgb 102 51 0);
   water_draw 0 550;
    
-  (**ROAD*) 
+  (**ROAD2*) 
    Graphics.moveto 0 0;
    Graphics.set_color (Graphics.rgb 229 215 158);
    road_draw 0 750; 

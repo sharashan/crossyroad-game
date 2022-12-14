@@ -10,7 +10,7 @@
   source:
   https://gitlab.com/camlspotter/camlimages/-/blob/hg-b4.2.6/src/graphic_image.ml*)
 
-val array_of_image : 'a -> 'b -> 'c -> 'd -> 'weak938
+val array_of_image : 'a -> 'b -> 'c -> 'd -> 'e
 (*[array_of_image] converts the image into an a color matrix. *)
 
 val of_image : 'a -> 'b -> 'c -> 'd -> 'e
