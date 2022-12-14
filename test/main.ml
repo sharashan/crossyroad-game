@@ -9,7 +9,15 @@ let check_test (name : string) (input : int) (expected_output : int) : test =
 let check_state_test (name : string) input expected_output : test =
   name >:: fun _ -> assert_equal input expected_output
 
-let test_oompa = { location = (0, 0); speed = 0; frame = 0; steps = 0 }
+let test_oompa =
+  {
+    location = (0, 0);
+    speed = 0;
+    frame = 0;
+    steps = 0;
+    oompa_width = 10;
+    oompa_height = 10;
+  }
 
 let test_moving_obstacle =
   {
@@ -28,8 +36,22 @@ let check_tests =
   [
     check_test "basic check test" (4 + 6) 10;
     check_state_test "testing states"
-      { location = (0, 0); speed = 0; frame = 0; steps = 0 }
-      { location = (0, 0); speed = 0; frame = 0; steps = 0 };
+      {
+        location = (0, 0);
+        speed = 0;
+        frame = 0;
+        steps = 0;
+        oompa_width = 50;
+        oompa_height = 50;
+      }
+      {
+        location = (0, 0);
+        speed = 0;
+        frame = 0;
+        steps = 0;
+        oompa_width = 50;
+        oompa_height = 50;
+      };
     check_state_test "checking states" test_tree_obstacle test_tree_obstacle;
     check_state_test "checking state" test_moving_obstacle test_moving_obstacle;
   ]
@@ -55,11 +77,23 @@ let get_obstacle (name : string) (input : Characters.obstacle)
 
 let get_player_speed (name : string) (input : player) (expected_output : int) :
     test =
-  name >:: fun _ -> assert_equal expected_output input.speed
+  name >:: fun _ ->
+  assert_equal expected_output input.speed ~printer:string_of_int
 
 let get_player_frame (name : string) (input : player) (expected_output : int) :
     test =
-  name >:: fun _ -> assert_equal expected_output input.frame
+  name >:: fun _ ->
+  assert_equal expected_output input.frame ~printer:string_of_int
+
+let get_player_width (name : string) (input : player) (expected_output : int) :
+    test =
+  name >:: fun _ ->
+  assert_equal expected_output input.oompa_width ~printer:string_of_int
+
+let get_player_height (name : string) (input : player) (expected_output : int) :
+    test =
+  name >:: fun _ ->
+  assert_equal expected_output input.oompa_height ~printer:string_of_int
 
 let get_gui_obstacle_type (name : string) (input : obstacle)
     (expected_output : obj) : test =
@@ -103,7 +137,16 @@ let get_gui_moving_direction (name : string) (input : moving_ob)
   name >:: fun _ -> assert_equal expected_output input.direction
 
 let gui_tests =
-  let oompa = { location = (10, 0); speed = 0; frame = 0; steps = 1 } in
+  let oompa =
+    {
+      location = (10, 0);
+      speed = 0;
+      frame = 0;
+      steps = 1;
+      oompa_width = 75;
+      oompa_height = 80;
+    }
+  in
   let gui_tree = { object_type = Tree; location = (50, 50) } in
   let gui_car =
     {
@@ -120,6 +163,8 @@ let gui_tests =
     get_steps "testing steps" oompa 1;
     get_player_speed "testing speed" oompa 0;
     get_player_speed "testing frame" oompa 0;
+    get_player_width "testing width" oompa 75;
+    get_player_height "testing height" oompa 80;
     get_gui_obstacle_type
       "testing obstacle type with newly created tree implemented in different \
        location"
