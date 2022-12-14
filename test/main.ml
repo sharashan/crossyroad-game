@@ -3,9 +3,6 @@ open Crossyroad
 open Characters
 open Display
 
-(** [pp_string s] pretty-prints string [s]. *)
-let pp_string s = "\"" ^ s ^ "\""
-
 let check_test (name : string) (input : int) (expected_output : int) : test =
   name >:: fun _ -> assert_equal input expected_output ~printer:string_of_int
 
@@ -48,11 +45,11 @@ let get_steps (name : string) (input : player) (expected_output : int) : test =
   name >:: fun _ ->
   assert_equal expected_output input.steps ~printer:string_of_int
 
-let get_moving_obstacle_type (name : string) (input : Characters.moving_ob)
+let get_moving_obstacle (name : string) (input : Characters.moving_ob)
     (expected_output : Characters.moving_ob) : test =
   name >:: fun _ -> assert_equal expected_output input
 
-let get_obstacle_type (name : string) (input : Characters.obstacle)
+let get_obstacle (name : string) (input : Characters.obstacle)
     (expected_output : Characters.obstacle) : test =
   name >:: fun _ -> assert_equal expected_output input
 
@@ -132,31 +129,27 @@ let gui_tests =
     get_gui_moving_speed "testing moving obstacle speed" gui_car 11;
     get_gui_moving_frame "testing moving obstacle frame" gui_car 12;
     get_gui_moving_direction "testing moving obstacle direction" gui_car Right;
-    get_moving_obstacle_type "checking type of moving obstacle"
-      test_moving_obstacle
+    get_moving_obstacle "checking type of moving obstacle" test_moving_obstacle
       { test_moving_obstacle with ob_type = Car };
-    get_moving_obstacle_type "checking location of moving obstacle"
+    get_moving_obstacle "checking location of moving obstacle"
       test_moving_obstacle
       { test_moving_obstacle with location = (20, 20) };
-    get_moving_obstacle_type "checking time of moving obstacle"
-      test_moving_obstacle
+    get_moving_obstacle "checking time of moving obstacle" test_moving_obstacle
       { test_moving_obstacle with time = 10 };
-    get_moving_obstacle_type "checking speed of moving obstacle"
-      test_moving_obstacle
+    get_moving_obstacle "checking speed of moving obstacle" test_moving_obstacle
       { test_moving_obstacle with speed = 2 };
-    get_moving_obstacle_type "checking frame of moving obstacle"
-      test_moving_obstacle
+    get_moving_obstacle "checking frame of moving obstacle" test_moving_obstacle
       { test_moving_obstacle with frame = 10 };
-    get_moving_obstacle_type "checking direction of moving obstacle"
+    get_moving_obstacle "checking direction of moving obstacle"
       test_moving_obstacle
       { test_moving_obstacle with direction = Left };
-    get_obstacle_type "checking type of tree obstacle" test_tree_obstacle
+    get_obstacle "checking type of tree obstacle" test_tree_obstacle
       { test_tree_obstacle with object_type = Tree };
-    get_obstacle_type "checking location of tree obstacle" test_tree_obstacle
+    get_obstacle "checking location of tree obstacle" test_tree_obstacle
       { test_tree_obstacle with location = (10, 10) };
-    get_obstacle_type "checking type of rock obstacle" test_rock_obstacle
+    get_obstacle "checking type of rock obstacle" test_rock_obstacle
       { test_rock_obstacle with object_type = Rock };
-    get_obstacle_type "checking location of rock obstacle" test_rock_obstacle
+    get_obstacle "checking location of rock obstacle" test_rock_obstacle
       { test_rock_obstacle with location = (30, 30) };
     check_collision "checking collision with empty list so it returns false"
       obstacle_list oompa false;
@@ -174,8 +167,40 @@ let test_state_t_start =
   {
     State.game_state = State.Start;
     mouse_pressed = false;
+    arrow_pressed = true;
+  }
+
+let test_state_t_play =
+  {
+    State.game_state = State.Play;
+    mouse_pressed = false;
     arrow_pressed = false;
   }
+
+let test_state_t_pause =
+  {
+    State.game_state = State.Pause;
+    mouse_pressed = false;
+    arrow_pressed = true;
+  }
+
+let test_state_t_fail =
+  {
+    State.game_state = State.Fail;
+    mouse_pressed = false;
+    arrow_pressed = false;
+  }
+
+let test_state_t_win =
+  { State.game_state = State.Win; mouse_pressed = true; arrow_pressed = false }
+
+let get_state_t (name : string) (input : State.t) (expected_output : State.t) :
+    test =
+  name >:: fun _ -> assert_equal expected_output input
+
+let get_game_mode (name : string) (input : State.t)
+    (expected_output : State.game_mode) : test =
+  name >:: fun _ -> assert_equal expected_output input.game_state
 
 let state_tests =
   [
@@ -183,6 +208,30 @@ let state_tests =
     test_string_to_state "testing play state" "play" State.Play;
     test_string_to_state "testing pause state" "pause" State.Pause;
     test_string_to_state "testing fail state" "fail" State.Fail;
+    test_string_to_state "testing win state" "win" State.Win;
+    get_game_mode "testing game mode" test_state_t_win State.Win;
+    get_state_t "checking start state" test_state_t_start
+      { test_state_t_start with State.game_state = State.Start };
+    get_state_t "checking play state" test_state_t_play
+      { test_state_t_play with State.game_state = State.Play };
+    get_state_t "checking pause state" test_state_t_pause
+      { test_state_t_pause with State.game_state = State.Pause };
+    get_state_t "checking fail state" test_state_t_fail
+      { test_state_t_fail with State.game_state = State.Fail };
+    get_state_t "checking win state" test_state_t_win
+      { test_state_t_win with State.game_state = State.Win };
+    get_state_t "checking mouse key with state play" test_state_t_play
+      { test_state_t_play with State.mouse_pressed = false };
+    get_state_t "checking arrow key with state play" test_state_t_play
+      { test_state_t_play with State.arrow_pressed = false };
+    get_state_t "checking mouse key with state fail" test_state_t_fail
+      { test_state_t_fail with State.mouse_pressed = false };
+    get_state_t "checking arrow key with state fail" test_state_t_fail
+      { test_state_t_fail with State.arrow_pressed = false };
+    get_state_t "checking mouse key with state start" test_state_t_start
+      { test_state_t_start with State.arrow_pressed = true };
+    get_state_t "checking mouse key with state win" test_state_t_win
+      { test_state_t_win with State.mouse_pressed = true };
   ]
 
 let suite =
