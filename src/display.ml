@@ -46,6 +46,10 @@ type l = {
   images : gui_images
 }
 
+type map = {
+  map : t 
+}
+
 let init_l () = 
   {
     images = {
@@ -72,6 +76,8 @@ let init_car_2 = car Car 100 300 0 10 0 Left
 let init_car_3 = car Car 300 800 0 10 0 Left 
 
 let move_lst = [init_car; init_car_2]
+
+let map_init = { oompa = init.oompa; characters_moving = move_lst; state = Pause}
 
 let init_t = { oompa = init.oompa; characters_moving = move_lst; state = Play}
 
@@ -320,6 +326,7 @@ let rec collision (oompa : player) (lst)=
 let reach_top (oompa:player) = if snd oompa.location > 850 then true else false
 
 let get_pause_input () = 
+  Characters.update_game_state map_init;  
   State.update_state "pause";
   State.draw_pause_screen ();
   let input2 = Graphics.read_key () in
