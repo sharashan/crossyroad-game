@@ -80,6 +80,8 @@ let create_issues_1 lst =
     |[]->  rock_init.rocks :: [] 
     | h :: t -> rock_init.rocks :: h :: t 
 
+  let _ = Random.self_init()
+
   let x_lst = [|Random.int 1000; Random.int 1000;Random.int 1000;Random.int 1000
   ;Random.int 1000;Random.int 1000; Random.int 1000;Random.int 1000;
   Random.int 1000;Random.int 1000;Random.int 1000; Random.int 1000;
@@ -90,7 +92,7 @@ let create_issues_1 lst =
   let tree_w_int = int_of_float Constants.tree_width
   let rock_w_int = int_of_float Constants.rock_width
   let y_lst = [|Random.int 150 - tree_w_int/2; Random.int 150 -  tree_w_int/2;Random.int 150 -  tree_w_int/2;
-  Random.int 150 -  tree_w_int/2;Random.int 150 -  tree_w_int/2;Random.int 150 -  tree_w_int/2; 
+  Random.int 150 -  tree_w_int;Random.int 150 -  tree_w_int;Random.int 150 -  tree_w_int/2; 
   Random.int 150 -  tree_w_int/2;Random.int 150 -  tree_w_int/2;Random.int 150 -  tree_w_int/2;
   Random.int 150 -  tree_w_int/2;Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2;
   Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2|]
@@ -234,7 +236,7 @@ let move_oompa (oompa : player) new_input move_lst =
 
 let rec start (oompa : player) (lst:obstacle list) =
   Constants.background_crossy (); 
-  (*draw_draw_obstacles tree_lst 0; *)
+  draw_draw_obstacles obstacle_lst 50;
   draw_obstacles obstacle_lst 400;
   draw_rocks rock_lst 600;
   (**UPDATE SCORE*)
