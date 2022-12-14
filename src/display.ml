@@ -41,7 +41,13 @@ let init2 =
 let init3 = {rock = {object_type = Rock; location = (100,650)}}
 
 let init_car = car Car 0 250 0 30 0 Right 
-let init_car_2 = car Car 0 250 0 30 0 Right 
+let init_car_2 = car Car 750 300 0 30 0 Left 
+
+let init_car_3 = car Car 750 800 0 30 0 Left 
+
+let move_lst = [init_car; init_car_2]
+
+let init_t = { oompa = init.oompa; characters_moving = move_lst; state = Play}
 
 
 let init_car_list = {hist_cars = []}
@@ -143,8 +149,14 @@ let rec update_car () =
   Graphics.set_color Graphics.white;
   Graphics.draw_rect (fst init_car.location)(snd init_car.location) car_width car_height; 
   add_car init_car_list init_car;
-  add_car init_car_list init_car_2;  
-  updateCar init_car init_car_list 5
+  add_car init_car_list init_car_2;
+  updateCar init_car init_car_list.hist_cars 5 
+
+let update_car_2 () = 
+  Graphics.set_color Graphics.white;
+  Graphics.draw_rect (fst init_car.location)(snd init_car.location) car_width car_height; 
+  add_car init_car_list init_car_3;
+  updateCar init_car init_car_list.hist_cars 5
 
 let rec collision (oompa : player) (lst)=
   match obstacle_lst with
@@ -248,6 +260,7 @@ let move_oompa (oompa : player) new_input move_lst =
 let rec start (oompa : player) (lst:obstacle list) =
   Constants.background_crossy (); 
   update_car (); 
+  update_car_2(); 
   draw_draw_obstacles obstacle_lst 0;
   draw_obstacles obstacle_lst 400;
   draw_rocks rock_lst 600;
@@ -273,6 +286,7 @@ let rec get_start_input () =
    (** Graphics.moveto 750 720;
     text "Score: " 150 Graphics.black;
     Graphics.draw_string (string_of_int init.oompa.steps);**)
+    tick init_t;
     start init.oompa obstacle_lst)
   else (
     Graphics.clear_graph ();
