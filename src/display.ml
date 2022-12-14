@@ -42,17 +42,14 @@ let init2 =
 
 let init3 = {rock = {object_type = Rock; location = (100,650)}}
 
-let init_car = car Car 0 250 0 10 0 Right 
+let init_car = car Car 0 150 0 10 0 Right 
 let init_car_2 = car Car 100 300 0 10 0 Left 
 
 let init_car_3 = car Car 300 800 0 10 0 Left 
 
-
-
 let move_lst = [init_car; init_car_2]
 
 let init_t = { oompa = init.oompa; characters_moving = move_lst; state = Play}
-
 
 let init_car_list = {hist_cars = []}
 
@@ -75,9 +72,6 @@ let text text size color =
   Graphics.draw_string text;
   Graphics.set_text_size size
 
-let rec stats (frame : Graphics.status) =
-  { key_pressed = frame.key; mouse_down = frame.button }
-
 let take_a_step (oompa : player) = oompa.steps <- oompa.steps + 1
 
 let rec print_list (lst:obstacle list)= 
@@ -85,22 +79,22 @@ let rec print_list (lst:obstacle list)=
   |[]-> () 
   | h ::t -> print_endline (string_of_int (fst h.location)); print_string " "; print_list t
 
-let create_issues_2 lst =
-  match lst with 
-  |[]->  (pain_init 400).trees :: [] 
-  | h :: t -> (pain_init 400).trees :: h :: t 
-
 let create_issues_1 lst =
   match lst with 
   |[]->  (pain_init 0).trees :: [] 
   | h :: t -> (pain_init 0).trees :: h :: t 
+
+let create_issues_2 lst =
+  match lst with 
+  |[]->  (pain_init 400).trees :: [] 
+  | h :: t -> (pain_init 400).trees :: h :: t 
 
   let create_issues_3 lst =
     match lst with 
     |[]->  rock_init.rocks :: [] 
     | h :: t -> rock_init.rocks :: h :: t 
 
-    let tree_h_int = int_of_float Constants.tree_height
+  let tree_h_int = int_of_float Constants.tree_height
   let rock_h_int = int_of_float Constants.rock_height
   let tree_w_int = int_of_float Constants.tree_width
   let rock_w_int = int_of_float Constants.rock_width
@@ -120,7 +114,6 @@ let create_issues_1 lst =
     else x 
 
   let map f lst = Array.map f lst
-  let constant_y = 0
 
   let y_lst = [|Random.int 140 +10; Random.int 140 + 10;Random.int 140 + 10;
   Random.int 140 + 10;Random.int 140 + 10|]
@@ -193,18 +186,27 @@ let draw_background () =
   draw_score ()
 
 let rec update_car () = 
-  Graphics.set_color Graphics.white;
+  Graphics.set_color Graphics.black;
   Graphics.draw_rect (fst init_car.location)(snd init_car.location) car_width car_height; 
   add_car init_car_list init_car;
   add_car init_car_list init_car_2;
   updateCar init_car init_car_list.hist_cars 2 
 
 let update_car_2 () = 
-  Graphics.set_color Graphics.white;
+  Graphics.set_color Graphics.black;
   Graphics.draw_rect (fst init_car_3.location)(snd init_car_3.location) car_width car_height; 
   add_car init_car_list init_car_3;
   move_car init_car_3 init_car_list.hist_cars 1; 
   updateCar init_car_3 init_car_list.hist_cars 1
+
+let update_car_3 () = 
+  Graphics.set_color Graphics.black;
+  Graphics.draw_rect (fst init_car_2.location)(snd init_car_2.location) car_width car_height; 
+  add_car init_car_list init_car_2;
+  move_car init_car_2 init_car_list.hist_cars 1; 
+  updateCar init_car_2 init_car_list.hist_cars 1
+
+let check_coll l cs = Characters.check_coll l cs 
 
 let rec collision_car (oompa:player) (car: moving_ob) (hist_lst:moving_ob list)= 
   match hist_lst with 
@@ -285,7 +287,7 @@ let rec collision (oompa : player) (lst)=
     then true 
       else false && collision oompa t
 
-  let reach_top (oompa:player) = if snd oompa.location > 850 then true else false
+let reach_top (oompa:player) = if snd oompa.location > 850 then true else false
 
 let move_oompa (oompa : player) new_input move_lst =
   match new_input with
@@ -316,6 +318,7 @@ let rec start (oompa : player) (lst:obstacle list) =
   Constants.background_crossy (); 
   update_car (); 
   update_car_2(); 
+  update_car_3();
   draw_draw_obstacles obstacle_lst 0;
   draw_obstacles obstacle_lst 0;
   draw_rocks rock_lst 0; 
@@ -329,7 +332,7 @@ let rec start (oompa : player) (lst:obstacle list) =
   Graphics.clear_graph ();
   (**REDRAW GRAPHICS*)
   draw_oompa ();
-  if collision oompa obstacle_lst || collision_car oompa init_car init_car_list.hist_cars || collision_car oompa init_car_3 init_car_list.hist_cars then (State.draw_fail_screen ();   State.update_state "fail";) else if reach_top oompa then (State.draw_win_screen (); 
+  if collision oompa obstacle_lst || collision_car oompa init_car init_car_list.hist_cars || collision_car oompa init_car_3 init_car_list.hist_cars || collision_car oompa init_car_2 init_car_list.hist_cars then (State.draw_fail_screen ();   State.update_state "fail";) else if reach_top oompa then (State.draw_win_screen (); 
    State.update_state "win";)
   else start oompa lst 
 
@@ -346,7 +349,3 @@ let rec get_start_input () =
     text "Try Again" 500 Graphics.black;
     get_start_input ())
 
-let get_moves () =
-  if Graphics.key_pressed () then
-    Graphics.wait_next_event [ Graphics.Key_pressed ]
-  else Graphics.wait_next_event [ Graphics.Poll ] 

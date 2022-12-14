@@ -16,9 +16,6 @@ let text text size color =
   Graphics.draw_string text;
   Graphics.set_text_size size
 
-(*let play_game init = if init.game_state = Start then init.game_state = Play
-  else init.game_state = Fail *)
-
 let draw_start_screen () =
   Graphics.draw_rect 200 200 600 500;
   Graphics.fill_rect 200 200 600 500;
@@ -39,8 +36,7 @@ let draw_win_screen () =
   Graphics.fill_rect 200 200 600 500;
   Graphics.draw_rect 200 200 600 500;
   Graphics.moveto 320 420;
-  (*Graphics.set_font
-    "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";*)
+  Graphics.set_font "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";
   text "Noice! You won :)" 500 Graphics.white
 
 let draw_pause_screen () =
@@ -48,11 +44,8 @@ let draw_pause_screen () =
   Graphics.draw_rect 200 200 600 500;
   Graphics.fill_rect 200 200 600 500;
   Graphics.moveto 320 420;
-  (*Graphics.set_font
-    "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";*)
+  Graphics.set_font "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";
   text "The game is paused" 500 Graphics.white
-
-(*let change_screen s t = { t with game_state = s } *)
 
 let string_to_state = function
   | "start" -> Start
@@ -63,11 +56,6 @@ let string_to_state = function
   | _ -> failwith "Not possible"
 
 let update_state s t = t.game_state <- string_to_state s
-
-(*let start_to_play s t = if t.game_state = Start then Display.get_start_input
-  (); update_state "play"
-
-  let set_start s t = update_state "start" t; start_to_play "play"*)
 
 let update_screen s t =
   if t.game_state = Fail then draw_fail_screen

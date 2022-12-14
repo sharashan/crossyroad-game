@@ -1,3 +1,4 @@
+(*Draws the background objects in the map*)
 open Graphics
 open Random
 
@@ -24,7 +25,6 @@ let rock_width = 30.
 
 let rock_height = 30.
 
-(*Draws the background objects in the map*)
 let grass y ={
   object_type = Grass; location = (0,y); 
 }
@@ -49,25 +49,25 @@ let tree_draw x y =
 let background_crossy () = 
   (**GRASS*)
   Graphics.moveto 0 0;
-  Graphics.set_color (Graphics.rgb 102 204 0);
+  Graphics.set_color (Graphics.rgb 51 102 0);
   grass_draw 0 0;
   (**ROAD*) 
   Graphics.moveto 0 0;
-  Graphics.set_color (Graphics.rgb 96 96 96);
+  Graphics.set_color (Graphics.rgb 229 215 158);
   road_draw 0 150; 
 
   (**GRASS*)
   Graphics.moveto 0 0;
-  Graphics.set_color (Graphics.rgb 102 204 0);
+  Graphics.set_color (Graphics.rgb 51 102 0);
   grass_draw 0 400;
   (**WATER*) 
   Graphics.moveto 0 0;
-  Graphics.set_color (Graphics.rgb 102 178 255);
+  Graphics.set_color (Graphics.rgb 102 51 0);
   water_draw 0 550;
    
   (**ROAD*) 
    Graphics.moveto 0 0;
-   Graphics.set_color (Graphics.rgb 96 96 96);
+   Graphics.set_color (Graphics.rgb 229 215 158);
    road_draw 0 750; 
   
 

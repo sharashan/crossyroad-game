@@ -30,13 +30,6 @@ type input = {
   mouse_down : bool;
 }
 
-(*The abstract type that represents the player's key input and a list of all 
-   the past moves the player had made*)
-type t = {
-  key_press : char;
-  moves_list : input list;
-}
-
 (*The type that initializes a main player. This is the player whose moves 
    are being controlled by the user*)
 type init = { mutable oompa : Characters.player }
@@ -84,7 +77,6 @@ val obstacle_lst : Characters.obstacle list
 val rock_lst : Characters.obstacle list
 
 val text : string -> int -> int -> unit
-val stats : Graphics.status -> input
 
 (*[take_a_step oompa] tracks the number of steps oompa takes. It increments the 
    step field in the record by one per step*)
@@ -151,4 +143,3 @@ val start : Characters.player -> Characters.obstacle list -> State.t -> unit
    message is printed.*)
 val get_start_input : unit -> State.t -> unit
 
-val get_moves : unit -> Graphics.status
