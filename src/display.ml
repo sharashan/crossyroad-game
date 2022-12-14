@@ -19,6 +19,11 @@ type input = {
   mouse_down : bool;
 }
 
+type row = {
+  mutable cars : moving_ob list; 
+}
+let init_row = { cars = []; }
+
 type t = {
   key_press : char;
   moves_list : input list;
@@ -28,13 +33,24 @@ type init = { mutable oompa : player }
 type init2 = { mutable obstacle : obstacle }
 type init3 = {mutable rock: obstacle}
 
-let init = { oompa = { location = (50, 50); speed = 0; frame = 0; steps = 0 } }
+let init = { oompa = { location = (50, 50); speed = 0; frame = 0; steps = 0; oompa_width = 30; oompa_height = 30 } }
 
 let init2 =
   { obstacle = {object_type = Tree; location = (100, 100)}}
 
 let init3 = {rock = {object_type = Rock; location = (100,650)}}
 
+let init_car = car Car 0 250 0 30 0 Right 
+let init_car_2 = car Car 750 300 0 30 0 Left 
+
+let init_car_3 = car Car 750 800 0 30 0 Left 
+
+let move_lst = [init_car; init_car_2]
+
+let init_t = { oompa = init.oompa; characters_moving = move_lst; state = Play}
+
+
+let init_car_list = {hist_cars = []}
 
 type pain_init = {trees : obstacle}  
 
@@ -164,6 +180,10 @@ let draw_draw_obstacles h y =
             Graphics.set_color Graphics.red; 
             Graphics.fill_rect ((map check_x x_lst).(x)) ((map check_y1 y_lst).(x)) tree_w_int tree_h_int;) done
       
+(*let spawn_car  = 
+  let new_car = Characters.spawn_moving_ob 200 Car in
+  init_row.cars <- new_car :: init_row.cars*)
+
 let draw_obstacles h y = 
   for x = 0 to 4 do (
     Graphics.set_color Graphics.red; 
@@ -174,13 +194,38 @@ let draw_rocks h y =
     Graphics.set_color (Graphics.rgb 102 204 0) ; 
     Graphics.fill_rect ((map check_x x_lst3).(x)) ((map check_y3 y_lst3).(x)) rock_w_int rock_h_int;) done 
 
-  
+let draw_score () = 
+  Graphics.moveto 800 800;
+  text "Score: " 200 Graphics.black;
+  Graphics.draw_string (string_of_int init.oompa.steps)
 
-(*let rec draw_obstacles (lst:obstacle list) =
-  match obstacle_lst with
-  | [] -> Graphics.draw_rect 0 0 10 10
-  | h :: t -> draw_draw_obstacles h y; draw_obstacles t*)
+let draw_oompa () = 
+  Graphics.set_color Graphics.blue;
+  Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30
 
+let draw_collision () = 
+  Graphics.set_color Graphics.black;
+  Graphics.draw_rect 100 100 50 50
+
+let draw_background () = 
+  draw_draw_obstacles obstacle_lst 0;
+  draw_obstacles obstacle_lst 400;
+  draw_rocks rock_lst 600;
+  (**UPDATE SCORE*)
+  draw_score ()
+
+let rec update_car () = 
+  Graphics.set_color Graphics.white;
+  Graphics.draw_rect (fst init_car.location)(snd init_car.location) car_width car_height; 
+  add_car init_car_list init_car;
+  add_car init_car_list init_car_2;
+  updateCar init_car init_car_list.hist_cars 5 
+
+let update_car_2 () = 
+  Graphics.set_color Graphics.white;
+  Graphics.draw_rect (fst init_car.location)(snd init_car.location) car_width car_height; 
+  add_car init_car_list init_car_3;
+  updateCar init_car init_car_list.hist_cars 5
 
 (*let dist_midpoint_x oompa_width tree_width =  oompa_width/2 + tree_width/2;
 
@@ -286,29 +331,27 @@ let move_oompa (oompa : player) new_input move_lst =
         else oompa.location)
   | _ -> failwith "Not a proper move"
 
+(**let tick init (st :State.t) = 
+  st.timer <- st.timer + 1; 
+  List.iter (fun row -> row.cars |> List.iter Characters.car_walk_n)**)
+
 let rec start (oompa : player) (lst:obstacle list) =
   Constants.background_crossy (); 
+  update_car (); 
+  update_car_2(); 
   draw_draw_obstacles obstacle_lst 0;
   draw_obstacles obstacle_lst 0;
   draw_rocks rock_lst 0; 
   (**UPDATE SCORE*)
-  Graphics.moveto 800 800;
-  text "Score: " 200 Graphics.black;
-  Graphics.draw_string (string_of_int init.oompa.steps);
-  (**OBSTACLE*)
- (**Graphics.set_color Graphics.black;
-  Graphics.draw_rect 100 100 50 50;*)
+  draw_score ();
   (**OOMPA*)
-  Graphics.set_color Graphics.blue;
-  Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30;
+  draw_oompa (); 
   let input_2 = Graphics.read_key () in
   move_oompa init.oompa input_2 [];
   Graphics.moveto (fst init.oompa.location) (snd init.oompa.location);
   Graphics.clear_graph ();
   (**REDRAW GRAPHICS*)
-  Graphics.draw_rect (fst init.oompa.location) (snd init.oompa.location) 30 30;
-  Graphics.set_color Graphics.black;
-  Graphics.draw_rect 100 100 50 50;
+  draw_oompa ();
   if collision oompa obstacle_lst then (State.draw_fail_screen ();
    State.update_state "fail";) else if reach_top oompa then (State.draw_win_screen (); 
    State.update_state "win";)
@@ -323,6 +366,7 @@ let rec get_start_input () =
    (** Graphics.moveto 750 720;
     text "Score: " 150 Graphics.black;
     Graphics.draw_string (string_of_int init.oompa.steps);**)
+    tick init_t;
     start init.oompa obstacle_lst)
   else (
     Graphics.clear_graph ();
