@@ -27,7 +27,16 @@ open Constants
 let check_test (name : string) (input : int) (expected_output : int) : test =
   name >:: fun _ -> assert_equal input expected_output ~printer:string_of_int
 
-let check_state_test (name : string) input expected_output : test =
+let check_state_test (name : string) (input : obstacle)
+    (expected_output : obstacle) : test =
+  name >:: fun _ -> assert_equal input expected_output
+
+let check_player_test (name : string) (input : player)
+    (expected_output : player) : test =
+  name >:: fun _ -> assert_equal input expected_output
+
+let check_moving_test (name : string) (input : moving_ob)
+    (expected_output : moving_ob) : test =
   name >:: fun _ -> assert_equal input expected_output
 
 let test_oompa =
@@ -56,7 +65,7 @@ let test_rock_obstacle = { object_type = Rock; location = (30, 30) }
 let check_tests =
   [
     check_test "basic check test" (4 + 6) 10;
-    check_state_test "testing states"
+    check_player_test "testing states"
       {
         location = (0, 0);
         speed = 0;
@@ -74,8 +83,31 @@ let check_tests =
         oompa_height = 50;
       };
     check_state_test "checking states" test_tree_obstacle test_tree_obstacle;
+    check_state_test "checking states"
+      { object_type = Rock; location = (30, 30) }
+      { object_type = Rock; location = (30, 30) };
+    check_state_test "checking states"
+      { object_type = Tree; location = (30, 30) }
+      { object_type = Tree; location = (30, 30) };
     check_state_test "checking states" test_rock_obstacle test_rock_obstacle;
-    check_state_test "checking state" test_moving_obstacle test_moving_obstacle;
+    check_moving_test "checking state" test_moving_obstacle test_moving_obstacle;
+    check_moving_test "checking states"
+      {
+        ob_type = Car;
+        location = (20, 20);
+        time = 10;
+        speed = 2;
+        frame = 10;
+        direction = Left;
+      }
+      {
+        ob_type = Car;
+        location = (20, 20);
+        time = 10;
+        speed = 2;
+        frame = 10;
+        direction = Left;
+      };
   ]
 
 let oompa_walk_test (name : string) (input : Characters.player)
@@ -204,6 +236,16 @@ let gui_tests =
       direction = Right;
     }
   in
+  let left_car =
+    {
+      ob_type = Car;
+      location = (100, 100);
+      time = 10;
+      speed = 11;
+      frame = 12;
+      direction = Left;
+    }
+  in
   [
     get_background "check background types" back_river_create River;
     get_background "check background types" back_grass_create Grass;
@@ -222,6 +264,7 @@ let gui_tests =
     get_gui_moving_speed "testing moving obstacle speed" gui_car 11;
     get_gui_moving_frame "testing moving obstacle frame" gui_car 12;
     get_gui_moving_direction "testing moving obstacle direction" gui_car Right;
+    get_gui_moving_direction "testing moving obstacle direction" left_car Left;
     get_gui_player "testing player width" oompa { oompa with oompa_width = 75 };
     get_gui_player "testing player height" oompa
       { oompa with oompa_height = 80 };
