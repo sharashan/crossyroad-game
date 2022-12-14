@@ -84,26 +84,46 @@ let create_issues_1 lst =
   ;Random.int 1000;Random.int 1000; Random.int 1000;Random.int 1000;
   Random.int 1000;Random.int 1000;Random.int 1000; Random.int 1000;
   Random.int 1000;Random.int 1000;Random.int 1000|]
-  let y_lst = [|Random.int 150 - 25; Random.int 150 - 25;Random.int 150 - 25;
-  Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25; 
-  Random.int 150 - 25;Random.int 150 - 25;Random.int 150 - 25;
-  Random.int 150 - 25;Random.int 200 - 15;Random.int 200 - 15;
-  Random.int 200 - 15;Random.int 200 - 15;Random.int 200 - 15|]
 
-let draw_draw_obstacles (h) y = 
-  for x = 0 to 4 do (
-  Graphics.set_color Graphics.red; 
-  Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))) 50 50;) done
+  let tree_h_int = int_of_float Constants.tree_height
+  let rock_h_int = int_of_float Constants.rock_height
+  let tree_w_int = int_of_float Constants.tree_width
+  let rock_w_int = int_of_float Constants.rock_width
+  let y_lst = [|Random.int 150 - tree_w_int/2; Random.int 150 -  tree_w_int/2;Random.int 150 -  tree_w_int/2;
+  Random.int 150 -  tree_w_int/2;Random.int 150 -  tree_w_int/2;Random.int 150 -  tree_w_int/2; 
+  Random.int 150 -  tree_w_int/2;Random.int 150 -  tree_w_int/2;Random.int 150 -  tree_w_int/2;
+  Random.int 150 -  tree_w_int/2;Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2;
+  Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2|]
 
+  (*let tree_list = []
+  let rec tree_lst x_lst y_lst = 
+    match x_lst with 
+    |[] -> []
+    | h :: t -> 
+      match y_lst with 
+      |[] -> []
+      |a::b ->  *)
+
+
+ (* let rec draw_draw_obstacles (lst:pain_init list) y = 
+        match lst with 
+        |[] -> []
+        | h::t -> Constants.tree_draw (fst h.location) (snd h.location+ y); *)
+
+let draw_draw_obstacles h y = 
+          for x = 0 to 4 do (
+            Graphics.set_color Graphics.red; 
+            Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))+y) tree_w_int tree_h_int;) done
+      
 let draw_obstacles h y = 
   for x = 5 to 9 do (
     Graphics.set_color Graphics.red; 
-    Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))+y) 50 50;) done
+    Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))+y) tree_w_int tree_h_int;) done
 
 let draw_rocks h y = 
   for x = 10 to 14 do (
     Graphics.set_color (Graphics.rgb 102 204 0) ; 
-    Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))+y) 30 30;) done
+    Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))+y) rock_w_int rock_h_int;) done
 
   
 
@@ -112,6 +132,10 @@ let draw_rocks h y =
   | [] -> Graphics.draw_rect 0 0 10 10
   | h :: t -> draw_draw_obstacles h y; draw_obstacles t*)
 
+
+(*let dist_midpoint_x oompa_width tree_width =  oompa_width/2 + tree_width/2;
+
+let dist_midpoint_y oompa_height tree_height= oompa_height/2 + tree_height/2*)
 
 let rec collision (oompa : player) (lst)=
   match obstacle_lst with
@@ -139,7 +163,7 @@ let rec collision (oompa : player) (lst)=
         && abs (y_lst.(4) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
-else if abs (x_lst.(5) - fst oompa.location) <= (16 / 2) + (36 / 2)
+      else if abs (x_lst.(5) - fst oompa.location) <= (16 / 2) + (36 / 2)
         && abs (y_lst.(5)+400 - snd oompa.location)
            <= (16 / 2) + (36 / 2)
       then true
@@ -210,7 +234,7 @@ let move_oompa (oompa : player) new_input move_lst =
 
 let rec start (oompa : player) (lst:obstacle list) =
   Constants.background_crossy (); 
-  draw_draw_obstacles obstacle_lst 0;
+  (*draw_draw_obstacles tree_lst 0; *)
   draw_obstacles obstacle_lst 400;
   draw_rocks rock_lst 600;
   (**UPDATE SCORE*)

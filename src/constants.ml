@@ -12,6 +12,18 @@ type background_type = {
   location : int * int;
 }
 
+let oompa_width = 50.
+
+let oompa_height  = 50.
+
+let tree_width = 50.
+
+let tree_height = 50.
+
+let rock_width = 30.
+
+let rock_height = 30.
+
 (*Draws the background objects in the map*)
 let grass y ={
   object_type = Grass; location = (0,y); 
@@ -28,6 +40,11 @@ let road_draw x y =
 let water_draw x y = 
   Graphics.draw_rect x y 1000 200;
   Graphics.fill_rect x y 1000 200
+
+let tree_draw x y = 
+  Graphics.moveto x y;
+  Graphics.set_color Graphics.red; 
+  Graphics.fill_rect (x) (y) 50 50
 
 let background_crossy () = 
   (**GRASS*)
@@ -52,6 +69,12 @@ let background_crossy () =
    Graphics.moveto 0 0;
    Graphics.set_color (Graphics.rgb 96 96 96);
    road_draw 0 750; 
+  
+
+
+
+
+
   
 
 
