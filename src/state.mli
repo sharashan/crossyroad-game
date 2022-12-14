@@ -15,7 +15,11 @@ type game_mode =
   | Fail
   | Win 
 
+(*The images type represents the pnf images depicting the objects on the game 
+   board *)
 type images
+
+
 
 (*The abstract type that represents the player's key and mouse inputs and a 
    mutable field game_state that represents which mode the game is in (this 
@@ -25,6 +29,9 @@ type t = {
   mouse_pressed : bool;
   arrow_pressed : bool;
 }
+
+(*[init_images] sets game_state to Start*)
+val init_images: t 
 
 (*[text s size color] defines the set string, size, and color for the text that
    will be printed out on each screen*)
