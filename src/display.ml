@@ -321,8 +321,15 @@ let rec collision (oompa : player) (lst)=
 
 let reach_top (oompa:player) = if snd oompa.location > 850 then true else false
 
+let get_pause_input () = 
+  State.update_state "pause";
+  State.draw_pause_screen ();
+  let input2 = Graphics.read_key () in
+  (if input2 <> 'a' then (State.draw_fail_screen ()))
+
 let move_oompa (oompa : player) new_input move_lst =
   match new_input with
+  | 'p' -> get_pause_input ()
   | 'a' ->
       oompa.location <-
         (if fst oompa.location - 10 > 0 then
@@ -346,15 +353,6 @@ let move_oompa (oompa : player) new_input move_lst =
         else oompa.location)
   | _ -> failwith "Not a proper move"
 
-  let get_pause_input () = 
-    let input = Graphics.read_key () in 
-    if input 'p' then (
-      State.update_state "pause";
-      State.draw_pause_screen ();
-      sleep (10.);
-        let input2 = Graphics.read_key in
-        if input2 <> 'a' then (State.update_state "fail"; State.draw_fail_screen ();)
-        else (State.update_state "play";))
 
 let rec start (oompa : player) (lst:obstacle list) =
   Constants.background_crossy (); 
@@ -371,8 +369,6 @@ let rec start (oompa : player) (lst:obstacle list) =
   let input_2 = Graphics.read_key () in
   move_oompa init.oompa input_2 [];
   Graphics.moveto (fst init.oompa.location) (snd init.oompa.location);
-  (*Pause*)
-  get_pause_input();
   (**REDRAW GRAPHICS*)
   draw_oompa (init_l ())  ();
   if collision oompa obstacle_lst || collision_car oompa init_car init_car_list.hist_cars || collision_car oompa init_car_3 init_car_list.hist_cars || collision_car oompa init_car_2 init_car_list.hist_cars then
