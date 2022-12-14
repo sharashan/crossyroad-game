@@ -35,6 +35,9 @@ let check_player_test (name : string) (input : player)
     (expected_output : player) : test =
   name >:: fun _ -> assert_equal input expected_output
 
+let false_test input expected_output =
+  input >:: fun _ -> assert (not (expected_output ()))
+
 let check_moving_test (name : string) (input : moving_ob)
     (expected_output : moving_ob) : test =
   name >:: fun _ -> assert_equal input expected_output
