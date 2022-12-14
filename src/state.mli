@@ -13,6 +13,7 @@ type game_mode =
   | Play
   | Pause
   | Fail
+  | Win 
 
 (*The abstract type that represents the player's key and mouse inputs and a 
    mutable field game_state that represents which mode the game is in (this 
@@ -30,11 +31,15 @@ val text : string -> int -> int -> unit
    is set to Start. This displays text asking for an input to start the game*)
 val draw_start_screen : unit -> unit
 
-(*[draw_fail_screen] draws the start_screen when the record field game_state
+(*[draw_fail_screen] draws the fail_screen when the record field game_state
    is set to Fail. *)
 val draw_fail_screen : unit -> unit
 
-(*[draw_pause_screen] draws the start_screen when the record field game_state
+(*[draw_win_screen] draws the win_screen when the record field game_state
+   is set to Win. *)
+val draw_win_screen : unit -> unit
+
+(*[draw_pause_screen] draws the pause_screen when the record field game_state
    is set to Pause. *)
 val draw_pause_screen : unit -> unit
 

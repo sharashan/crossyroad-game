@@ -82,20 +82,67 @@ let create_issues_1 lst =
 
   let _ = Random.self_init()
 
-  let x_lst = [|Random.int 1000; Random.int 1000;Random.int 1000;Random.int 1000
-  ;Random.int 1000;Random.int 1000; Random.int 1000;Random.int 1000;
-  Random.int 1000;Random.int 1000;Random.int 1000; Random.int 1000;
-  Random.int 1000;Random.int 1000;Random.int 1000|]
 
-  let tree_h_int = int_of_float Constants.tree_height
+    let tree_h_int = int_of_float Constants.tree_height
   let rock_h_int = int_of_float Constants.rock_height
   let tree_w_int = int_of_float Constants.tree_width
   let rock_w_int = int_of_float Constants.rock_width
-  let y_lst = [|Random.int 150 - tree_w_int/2; Random.int 150 -  tree_w_int/2;Random.int 150 -  tree_w_int/2;
-  Random.int 150 -  tree_w_int;Random.int 150 -  tree_w_int;Random.int 150 -  tree_w_int/2; 
-  Random.int 150 -  tree_w_int/2;Random.int 150 -  tree_w_int/2;Random.int 150 -  tree_w_int/2;
-  Random.int 150 -  tree_w_int/2;Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2;
-  Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2|]
+
+  let x_lst = [|Random.int 1000; Random.int 1000;Random.int 1000;Random.int 1000; Random.int 1000|]
+  
+  let x_lst2 = [|Random.int 1000; Random.int 1000;Random.int 1000;
+  Random.int 1000;Random.int 1000|]
+
+  let x_lst3 = [|Random.int 1000; Random.int 1000;
+  Random.int 1000;Random.int 1000;Random.int 1000|]
+
+  let check_x x = 
+    if x < 100 then x + 50 
+    else if x > 900 then  x - 50
+    else if x = 50 then x + 50
+    else x 
+
+  let map f lst = Array.map f lst
+  let constant_y = 0
+
+  let y_lst = [|Random.int 150; Random.int 150;Random.int 150;
+  Random.int 150;Random.int 150|] (*;Random.int 150; 
+  Random.int 150;Random.int 150;Random.int 150;
+  Random.int 150;Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2;
+  Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2;Random.int 200 - rock_w_int/2|] *)
+
+  let y_lst2 = [|Random.int 550; 
+  Random.int 550;Random.int 550;Random.int 550;
+  Random.int 550|]
+
+  let y_lst3 = [|Random.int 750 ;Random.int 750 ;
+  Random.int 750 ;Random.int 750 ;Random.int 750 |]
+
+  let check_y1 x = 
+    if x < 50 then x + 50 
+    else if x >= 100 then  x - 50
+    else if x = 50 then x + 50
+    else x 
+
+   let check_y2 x = 
+    if x < 100 then x + 400 
+    else if x < 200 then x + 300
+    else if x < 300 then x + 200
+   else if x < 400 then x + 100
+    else if x >= 500 then  x - 50
+    else x 
+
+  let check_y3 x = 
+    if x < 100 then x + 600 
+    else if x < 200 then x + 500
+    else if x < 300 then x + 400
+   else if x < 400 then x + 300
+   else if x < 500 then x + 200
+   else if x < 600 then x + 100
+    else if x >= 700 then  x - 50
+    else x 
+
+  
 
   (*let tree_list = []
   let rec tree_lst x_lst y_lst = 
@@ -115,17 +162,17 @@ let create_issues_1 lst =
 let draw_draw_obstacles h y = 
           for x = 0 to 4 do (
             Graphics.set_color Graphics.red; 
-            Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))+y) tree_w_int tree_h_int;) done
+            Graphics.fill_rect ((map check_x x_lst).(x)) ((map check_y1 y_lst).(x)) tree_w_int tree_h_int;) done
       
 let draw_obstacles h y = 
-  for x = 5 to 9 do (
+  for x = 0 to 4 do (
     Graphics.set_color Graphics.red; 
-    Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))+y) tree_w_int tree_h_int;) done
+    Graphics.fill_rect ((map check_x x_lst2).(x)) ((map check_y2 y_lst2).(x)) tree_w_int tree_h_int;) done
 
 let draw_rocks h y = 
-  for x = 10 to 14 do (
+  for x = 0 to 4 do (
     Graphics.set_color (Graphics.rgb 102 204 0) ; 
-    Graphics.fill_rect (x_lst.(x)) ((y_lst.(x))+y) rock_w_int rock_h_int;) done
+    Graphics.fill_rect ((map check_x x_lst3).(x)) ((map check_y3 y_lst3).(x)) rock_w_int rock_h_int;) done 
 
   
 
@@ -139,75 +186,80 @@ let draw_rocks h y =
 
 let dist_midpoint_y oompa_height tree_height= oompa_height/2 + tree_height/2*)
 
+
+
 let rec collision (oompa : player) (lst)=
   match obstacle_lst with
   | [] -> false
   | h :: t ->
       if
-        abs (x_lst.(0) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(0) - snd oompa.location)
+        abs ((map check_x x_lst).(0) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y1 y_lst).(0) - snd oompa.location)
            <= (16 / 2) + (36 / 2)
       then true
       else if 
-        abs (x_lst.(1) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(1) - snd oompa.location)
+        abs ((map check_x x_lst).(1) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y1 y_lst).(1) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
-      else if abs (x_lst.(2) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(2) - snd oompa.location)
+      else if abs ((map check_x x_lst).(2) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y1 y_lst).(2) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
-      else if abs (x_lst.(3) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(3) - snd oompa.location)
+      else if abs ((map check_x x_lst).(3) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y1 y_lst).(3) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
         then true
-      else if abs (x_lst.(4) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(4) - snd oompa.location)
+      else if abs ((map check_x x_lst).(4) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y1 y_lst).(4) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
-      else if abs (x_lst.(5) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(5)+400 - snd oompa.location)
+      else if abs ((map check_x x_lst2).(0) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y2 y_lst2).(0) - snd oompa.location)
            <= (16 / 2) + (36 / 2)
       then true
       else if 
-        abs (x_lst.(6) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(6)+400 - snd oompa.location)
+        abs ((map check_x x_lst2).(1) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y2 y_lst2).(1) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
-      else if abs (x_lst.(7) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(7)+400 - snd oompa.location)
+      else if abs ((map check_x x_lst2).(2) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y2 y_lst2).(2) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
-      else if abs (x_lst.(8) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(8)+400 - snd oompa.location)
+      else if abs ((map check_x x_lst2).(3) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y2 y_lst2).(3) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
         then true
-      else if abs (x_lst.(9) - fst oompa.location) <= (16 / 2) + (36 / 2)
-        && abs (y_lst.(9)+400 - snd oompa.location)
+      else if abs ((map check_x x_lst2).(4) - fst oompa.location) <= (16 / 2) + (36 / 2)
+        && abs ((map check_y2 y_lst2).(4) - snd oompa.location)
         <= (16 / 2) + (36 / 2)
       then true
-    else if abs (x_lst.(10) - fst oompa.location) <= (16 / 2) + (36 / 2)
-      && abs (y_lst.(10)+600 - snd oompa.location)
+      
+    else if abs ((map check_x x_lst3).(0) - fst oompa.location) <= (16 / 2) + (36 / 2)
+      && abs ((map check_y3 y_lst3).(0) - snd oompa.location)
          <= (16 / 2) + (36 / 2)
     then true
     else if 
-      abs (x_lst.(11) - fst oompa.location) <= (16 / 2) + (36 / 2)
-      && abs (y_lst.(11)+600 - snd oompa.location)
+      abs ((map check_x x_lst3).(1) - fst oompa.location) <= (16 / 2) + (36 / 2)
+      && abs ((map check_y3 y_lst3).(1)- snd oompa.location)
       <= (16 / 2) + (36 / 2)
     then true
-    else if abs (x_lst.(12) - fst oompa.location) <= (16 / 2) + (36 / 2)
-      && abs (y_lst.(12)+600 - snd oompa.location)
+    else if abs ((map check_x x_lst3).(2) - fst oompa.location) <= (16 / 2) + (36 / 2)
+      && abs ((map check_y3 y_lst3).(2) - snd oompa.location)
       <= (16 / 2) + (36 / 2)
     then true
-    else if abs (x_lst.(13) - fst oompa.location) <= (16 / 2) + (36 / 2)
-      && abs (y_lst.(13)+600 - snd oompa.location)
+    else if abs ((map check_x x_lst3).(3) - fst oompa.location) <= (16 / 2) + (36 / 2)
+      && abs ((map check_y3 y_lst3).(3) - snd oompa.location)
       <= (16 / 2) + (36 / 2)
       then true
-    else if abs (x_lst.(14) - fst oompa.location) <= (16 / 2) + (36 / 2)
-      && abs (y_lst.(14)+600 - snd oompa.location)
+    else if abs ((map check_x x_lst3).(4) - fst oompa.location) <= (16 / 2) + (36 / 2)
+      && abs ((map check_y3 y_lst3).(4)- snd oompa.location)
       <= (16 / 2) + (36 / 2)
-    then true
+    then true 
       else false && collision oompa t
+
+  let reach_top (oompa:player) = if snd oompa.location > 850 then true else false
 
 let move_oompa (oompa : player) new_input move_lst =
   match new_input with
@@ -236,9 +288,9 @@ let move_oompa (oompa : player) new_input move_lst =
 
 let rec start (oompa : player) (lst:obstacle list) =
   Constants.background_crossy (); 
-  draw_draw_obstacles obstacle_lst 50;
-  draw_obstacles obstacle_lst 400;
-  draw_rocks rock_lst 600;
+  draw_draw_obstacles obstacle_lst 0;
+  draw_obstacles obstacle_lst 0;
+  draw_rocks rock_lst 0; 
   (**UPDATE SCORE*)
   Graphics.moveto 800 800;
   text "Score: " 200 Graphics.black;
@@ -258,7 +310,9 @@ let rec start (oompa : player) (lst:obstacle list) =
   Graphics.set_color Graphics.black;
   Graphics.draw_rect 100 100 50 50;
   if collision oompa obstacle_lst then (State.draw_fail_screen ();
-   State.update_state "fail";) else start oompa lst
+   State.update_state "fail";) else if reach_top oompa then (State.draw_win_screen (); 
+   State.update_state "win";)
+  else start oompa lst 
 
 let rec get_start_input () =
   let input = Graphics.read_key () in
@@ -279,4 +333,4 @@ let rec get_start_input () =
 let get_moves () =
   if Graphics.key_pressed () then
     Graphics.wait_next_event [ Graphics.Key_pressed ]
-  else Graphics.wait_next_event [ Graphics.Poll ]
+  else Graphics.wait_next_event [ Graphics.Poll ] 
