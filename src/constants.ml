@@ -17,11 +17,11 @@ let oompa_width = 50.
 
 let oompa_height  = 50.
 
-let tree_width = 25.
+let tree_width = 70.
 
-let tree_height = 50.
+let tree_height = 70.
 
-let rock_width = 30.
+let rock_width = 41.
 
 let rock_height = 30.
 
@@ -43,8 +43,8 @@ let water_draw x y =
 
 let tree_draw x y = 
   Graphics.moveto x y;
-  Graphics.set_color Graphics.red; 
-  Graphics.fill_rect (x) (y) 50 50
+  Graphics.set_color Graphics.red
+  (*Graphics.fill_rect (x) (y) 50 50*)
 
 let background_crossy () = 
   (**GRASS*)
@@ -74,7 +74,5 @@ let background_crossy () =
 
 
 
-
-  
 
 

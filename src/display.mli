@@ -139,13 +139,13 @@ val draw_draw_obstacles : l -> 'a -> 'b -> unit
 in the second patch of grass. [y] representes the dy that needs to be added to 
 the randomly generated y-coordinates to place the trees in the right patch of 
 grass*)
-val draw_obstacles : 'a -> int -> unit
+val draw_obstacles : l -> 'a -> int -> unit
 
 (*[draw_rocks h y] iteratively draws five rocks in random coordinates
 in the water. [y] representes the dy that needs to be added to 
 the randomly generated y-coordinates to place the rocks within the width of the
 water*)
-val draw_rocks : 'a -> int -> unit
+val draw_rocks : l -> 'a -> int -> unit
 
 (*[draw_score] is the helper that [start] calls on to draw the score*)
 val draw_score : unit -> unit 
@@ -158,13 +158,13 @@ val draw_oompa : l -> unit -> unit
 val draw_background : l -> unit -> unit 
 
 (*[update_car_1] draws the first car in its defined coordinates*)
-val update_car_1 : unit -> unit
+val update_car_1 : l -> unit -> unit
 
 (*[update_car_2] draws the first car in its defined coordinates*)
-val update_car_2 : unit -> unit
+val update_car_2 : l -> unit -> unit
 
 (*[update_car_3] draws the first car in its defined coordinates*)
-val update_car_3 : unit -> unit
+val update_car_3 : l -> unit -> unit
 
 val collision_car: Characters.player -> Characters.moving_ob -> 
    Characters.moving_ob list -> bool 
