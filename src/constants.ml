@@ -24,14 +24,6 @@ let tree_width = 70.
 let tree_height = 70.
 
 let rock_width = 41.
-(*tree width*)
-let tree_width = 25.
-
-(*tree height*)
-let tree_height = 50.
-
-(*rock width*)
-let rock_width = 30.
 
 (*rock height*)
 let rock_height = 30.
