@@ -4,6 +4,26 @@ open Characters
 open Display
 open Constants
 
+(* Test Plan : There are parts of the system that were automatically tested by
+   OUnit. These mainly included from the state.ml files and for the gui,
+   checking if the character.ml file has initiated the objects and obstacles
+   with the proper fields. The OUnit checks if the fields are correct.
+   Additionally, the OUnit checks collision with the player and the obstacle
+   based on the location and the boolean of whether the locations actually
+   collide or not. The automatic testing of our system is for correctness of
+   fields and states for the different objects.
+
+   Manual testing is applied to many other parts of the system such as the
+   randomization of trees in the specific grass area and the stones in the
+   river. It was also applied to maintain proper correctness of the collisions
+   and movement that OUnit testing cannot maintain.
+
+   The testing approach used here is mostly glass-box testing since the
+   implementation of the functions is what drove the implementation of the tests
+   with the different test cases. There was no randomized testing used. The test
+   cases were picked looking at how the implementation introduces boundaries
+   that show what inputs need to produce what outputs. Especially with the
+   different boundary cases and types that need to be tested.*)
 let check_test (name : string) (input : int) (expected_output : int) : test =
   name >:: fun _ -> assert_equal input expected_output ~printer:string_of_int
 

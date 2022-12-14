@@ -78,6 +78,8 @@ val obstacle_lst : Characters.obstacle list
    *)
 val rock_lst : Characters.obstacle list
 
+(*[text s size color] defines the set string, size, and color for the text that
+   will be printed out on each screen*)
 val text : string -> int -> int -> unit
 
 (*[take_a_step oompa] tracks the number of steps oompa takes. It increments the 
