@@ -24,6 +24,8 @@ type t = {
   arrow_pressed : bool;
 }
 
+(*[text s size color] defines the set string, size, and color for the text that
+   will be printed out on each screen*)
 val text : string -> int -> int -> unit
 
 (*[draw_start_screen] draws the start_screen when the record field game_state

@@ -52,10 +52,10 @@ let rec check_coll (l : int * int) (cs : moving_ob list) =
   match cs with
   | [] -> None
   | h :: t ->
-      let is_collsion (c : moving_ob) =
+      let is_collision (c : moving_ob) =
         if snd l <> snd c.location then false else fst l = fst c.location
       in
-      if is_collsion h then Some h else check_coll l t
+      if is_collision h then Some h else check_coll l t
 
 let update_game_state (map : t) =
   let new_state =
