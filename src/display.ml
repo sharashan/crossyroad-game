@@ -49,11 +49,11 @@ type l = {
 let init_l () = 
   {
     images = {
-      oompa_loompa = Image.to_image (Png.load "images/oompa_loompa.png" []) 0 0 0;
-      trees = Image.to_image (Png.load "images/cotton_candy.png" []) 0 0 0;
-      cars = Image.to_image (Png.load "images/cars.png" []) 0 0 0;
-      rocks = Image.to_image (Png.load "images/rocks.png" []) 0 0 0;
-      dead = Image.to_image (Png.load "images/dead.png" []) 0 0 0
+      oompa_loompa = Image.of_image (Png.load "images/oompa_loompa.png" []) 0 0 0;
+      trees = Image.of_image (Png.load "images/cotton_candy.png" []) 0 0 0;
+      cars = Image.of_image (Png.load "images/cars.png" []) 0 0 0;
+      rocks = Image.of_image (Png.load "images/rocks.png" []) 0 0 0;
+      dead = Image.of_image (Png.load "images/dead.png" []) 0 0 0
     }
   }
 
@@ -186,7 +186,7 @@ let draw_draw_obstacles st h y =
           for x = 0 to 4 do (
             Graphics.set_color Graphics.red; 
             Graphics.draw_image st.images.trees ((map check_x x_lst).(x)) ((map check_y1 y_lst).(x))
-            (*Graphics.fill_rect ((map check_x x_lst).(x)) ((map check_y1 y_lst).(x)) tree_w_int tree_h_int;*)) done
+           (* Graphics.fill_rect ((map check_x x_lst).(x)) ((map check_y1 y_lst).(x)) tree_w_int tree_h_int;*)) done
     
 
 let draw_obstacles st h y = 
@@ -197,15 +197,14 @@ let draw_obstacles st h y =
 let draw_rocks st h y = 
   for x = 0 to 4 do (
     Graphics.set_color (Graphics.rgb 102 204 0) ; 
-    Graphics.draw_image st.images.rocks ((map check_x x_lst3).(x)) ((map check_y3 y_lst3).(x))) done 
+    Graphics.draw_image st.images.rocks ((map check_x x_lst3).(x)) ((map check_y3 y_lst3).(x))) done
 
 let draw_score () = 
   Graphics.moveto 750 800;
   text "Score: " 200 Graphics.black;
   Graphics.draw_string (string_of_int init.oompa.steps)
   
-let draw_oompa st () = 
-  Graphics.set_color Graphics.blue;
+let draw_oompa st () =  
   Graphics.draw_image st.images.oompa_loompa (fst init.oompa.location) (snd init.oompa.location) 
 
 let draw_collision () = 
@@ -227,7 +226,7 @@ let rec update_car_1 st () =
 
 let update_car_2 st() = 
   Graphics.set_color Graphics.black;
-  Graphics.draw_image st.images.cars (fst init_car_3.location) (snd init_car_3.location); 
+  Graphics.draw_image st.images.cars (fst init_car_3.location) (snd init_car_3.location);
   add_car init_car_list init_car_3;
   move_car init_car_3 init_car_list.hist_cars 1; 
   updateCar init_car_3 init_car_list.hist_cars 1
@@ -365,9 +364,11 @@ let rec start (oompa : player) (lst:obstacle list) =
   (**REDRAW GRAPHICS*)
   draw_oompa (init_l ())  ();
   if collision oompa obstacle_lst || collision_car oompa init_car init_car_list.hist_cars || collision_car oompa init_car_3 init_car_list.hist_cars || collision_car oompa init_car_2 init_car_list.hist_cars then
-     (Graphics.draw_image (init_l ()).images.dead (fst init.oompa.location) (snd init.oompa.location);
+    (Graphics.set_color Graphics.blue;
+     Graphics.draw_image (init_l ()).images.dead (fst init.oompa.location) (snd init.oompa.location);
       sleep 1.0; 
       Graphics.clear_graph ();
+      Graphics.set_color Graphics.blue;
   State.draw_fail_screen ();   State.update_state "fail";) else if reach_top oompa then (State.draw_win_screen (); 
    State.update_state "win";)
   else start oompa lst 
