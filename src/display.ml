@@ -219,13 +219,15 @@ let rec update_car () =
   Graphics.draw_rect (fst init_car.location)(snd init_car.location) car_width car_height; 
   add_car init_car_list init_car;
   add_car init_car_list init_car_2;
-  updateCar init_car init_car_list.hist_cars 5 
+  updateCar init_car init_car_list.hist_cars 2 
 
 let update_car_2 () = 
   Graphics.set_color Graphics.white;
-  Graphics.draw_rect (fst init_car.location)(snd init_car.location) car_width car_height; 
+  
+  Graphics.draw_rect (fst init_car_3.location)(snd init_car_3.location) car_width car_height; 
   add_car init_car_list init_car_3;
-  updateCar init_car init_car_list.hist_cars 5
+  move_car init_car_3 init_car_list.hist_cars 
+  (*updateCar init_car_3 init_car_list.hist_cars 7 *)
 
 (*let dist_midpoint_x oompa_width tree_width =  oompa_width/2 + tree_width/2;
 

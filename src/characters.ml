@@ -152,29 +152,31 @@ let rec move_car car_character hist dt =
       | h :: t ->
           if fst h.location + car_walk + (car_width / 2) < 1000 then
             h.location <- (fst h.location + car_walk, snd h.location)
+            (*else if fst h.location = 1000 then ( h.location <- (0, snd
+              h.location); move_car car_character t dt) *)
           else (
-            h.location <- (fst h.location, snd h.location - car_walk);
+            h.location <- (0, snd h.location);
             move_car car_character t dt)
     else if car_character.direction = Left then
       match hist with
       | [] -> failwith "None"
       | h :: t ->
           if fst h.location - car_walk - (car_width / 2) > 0 then
-            h.location <- (fst h.location - car_walk, snd h.location)
+            h.location <- (fst h.location - dt, snd h.location)
           else (
-            h.location <- (fst h.location, snd h.location - car_walk);
+            h.location <- (fst h.location, snd h.location);
             move_car car_character t dt)
 
 let rec updateCar car_character hist_cars (dt : int) =
-  if car_character.time < car_character.speed then
-    car_character.time <- car_character.time + dt
-  else
-    match hist_cars with
-    | [] -> ()
-    | h :: t ->
-        car_character.time <- 0;
-        move_car car_character hist_cars dt;
-        updateCar car_character t dt
+  (*if car_character.time < car_character.speed then car_character.time <-
+    car_character.time + dt else *)
+  match hist_cars with
+  | [] -> ()
+  | h :: t ->
+      (*car_character.location <- (fst car_character.location - dt, snd
+        car_character.location); *)
+      move_car car_character hist_cars dt;
+      updateCar car_character t dt
 
 let draw_oompa (t : player) x y =
   let a = t.location = (x, y) in
