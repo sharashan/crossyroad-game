@@ -204,7 +204,7 @@ let draw_background st () =
   (**UPDATE SCORE*)
   draw_score ()
 
-let rec update_car () = 
+let rec update_car_1 () = 
   Graphics.set_color Graphics.black;
   Graphics.draw_rect (fst init_car.location)(snd init_car.location) car_width car_height; 
   add_car init_car_list init_car;
@@ -335,7 +335,7 @@ let move_oompa (oompa : player) new_input move_lst =
 
 let rec start (oompa : player) (lst:obstacle list) =
   Constants.background_crossy (); 
-  update_car (); 
+  update_car_1 (); 
   update_car_2(); 
   update_car_3();
   draw_draw_obstacles (init_l ()) obstacle_lst 0;

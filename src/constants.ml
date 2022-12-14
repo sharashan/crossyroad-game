@@ -17,7 +17,7 @@ let oompa_width = 50.
 
 let oompa_height  = 50.
 
-let tree_width = 50.
+let tree_width = 25.
 
 let tree_height = 50.
 

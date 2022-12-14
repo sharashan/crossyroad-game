@@ -151,11 +151,11 @@ val draw_rocks : 'a -> int -> unit
 val draw_score : unit -> unit 
 
 (*[draw_oompa] is the helper that [start] calls on to draw the main player*)
-val draw_oompa : unit -> unit 
+val draw_oompa : l -> unit -> unit 
 
 (*[draw_background] is the helper that [start] calls on to draw the background
    elements, like the obstacles*)
-val draw_background : unit -> unit 
+val draw_background : l -> unit -> unit 
 
 (*[update_car_1] draws the first car in its defined coordinates*)
 val update_car_1 : unit -> unit
