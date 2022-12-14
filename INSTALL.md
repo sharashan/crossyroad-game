@@ -22,4 +22,25 @@ Install the graphics package through terminal:
 
 Download XQuartz (https://www.xquartz.org/)
 
+___________
+___________
+
+
+## Render .png image files:
+
+macOS:
+
+`$ brew install libpng`
+
+Windows camlimages install:
+
+`$ sudo apt-get install libpng-dev`
+
+Now install additional dependenies:
+
+`$ opam install conf-libpng`
+
+Install camlimages:
+`$ opam install camlimages`
+
 Now you can play with `$ make play`
