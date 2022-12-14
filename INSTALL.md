@@ -43,4 +43,6 @@ Now install additional dependenies:
 Install camlimages:
 `$ opam install camlimages`
 
+## Play!!
+
 Now you can play with `$ make play`
