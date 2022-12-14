@@ -52,7 +52,7 @@ let draw_win_screen () =
   Graphics.draw_rect 200 200 600 500;
   Graphics.moveto 320 420;
   Graphics.set_font "-*-fixed-medium-r-semicondensed--50-*-*-*-*-*-iso8859-1";
-  text "Noice! You won :)" 500 Graphics.white
+  text "Lovely. You won :)" 500 Graphics.white
 
 (*[draw_pause_screen] draws the pause_screen when the record field game_state is
   set to Pause. *)
