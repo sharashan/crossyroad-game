@@ -30,6 +30,8 @@ type input = {
   mouse_down : bool;
 }
 
+type l
+
 (*The type that initializes a main player. This is the player whose moves 
    are being controlled by the user*)
 type init = { mutable oompa : Characters.player }
@@ -133,7 +135,7 @@ val check_y3 : int -> int
 in the first patch of grass. [y] representes the dy that needs to be added to 
 the randomly generated y-coordinates to place the trees in the right patch of 
 grass*)
-val draw_draw_obstacles : 'a -> int -> unit
+val draw_draw_obstacles : l -> 'a -> 'b -> unit
 
 (*[draw_obstacles h y] iteratively draws five trees in random coordinates
 in the second patch of grass. [y] representes the dy that needs to be added to 
@@ -151,11 +153,11 @@ val draw_rocks : 'a -> int -> unit
 val draw_score : unit -> unit 
 
 (*[draw_oompa] is the helper that [start] calls on to draw the main player*)
-val draw_oompa : unit -> unit 
+val draw_oompa : l -> unit -> unit 
 
 (*[draw_background] is the helper that [start] calls on to draw the background
    elements, like the obstacles*)
-val draw_background : unit -> unit 
+val draw_background : l -> unit -> unit 
 
 (*[update_car_1] draws the first car in its defined coordinates*)
 val update_car_1 : unit -> unit

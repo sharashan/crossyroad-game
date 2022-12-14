@@ -14,7 +14,7 @@ type background =
 (*The background_type is a record that has fields object_type (which is of 
    type background) and location*)
 type background_type = {
-  object_type : background;
+  back_type : background;
   location : int * int;
 }
 

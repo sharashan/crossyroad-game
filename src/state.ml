@@ -1,3 +1,5 @@
+open Image
+
 type game_mode =
   | Start
   | Play
@@ -5,11 +7,16 @@ type game_mode =
   | Fail
   | Win
 
+type images = { oompa : Graphics.image }
+
 type t = {
   mutable game_state : game_mode;
   mouse_pressed : bool;
   arrow_pressed : bool;
 }
+
+let init_images =
+  { game_state = Start; mouse_pressed = false; arrow_pressed = false }
 
 let text text size color =
   Graphics.set_color color;

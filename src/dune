@@ -1,4 +1,10 @@
 (library
  (name Crossyroad)
  (public_name Crossyroad)
- (libraries yojson graphics ANSITerminal))
+ (libraries
+  yojson
+  graphics
+  ANSITerminal
+  camlimages
+  camlimages.png
+  camlimages.graphics))
