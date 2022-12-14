@@ -34,5 +34,5 @@ clean:
 doc:
 	dune build @doc
 
-opendoc: doc
-	@bash opendoc.sh
+#opendoc: doc
+#	@bash opendoc.sh
