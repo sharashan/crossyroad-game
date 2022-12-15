@@ -52,6 +52,11 @@ let test_oompa =
     oompa_height = 10;
   }
 
+let reach_top_test (name : string) (input : player) (expected_output : bool) :
+    test =
+  name >:: fun _ ->
+  assert_equal expected_output (Display.reach_top input) ~printer:string_of_bool
+
 let test_moving_obstacle =
   {
     ob_type = Car;
@@ -111,6 +116,16 @@ let check_tests =
         frame = 10;
         direction = Left;
       };
+    reach_top_test "testing if oompa reached the top"
+      {
+        location = (0, 0);
+        speed = 0;
+        frame = 0;
+        steps = 0;
+        oompa_width = 50;
+        oompa_height = 50;
+      }
+      false;
   ]
 
 let oompa_walk_test (name : string) (input : Characters.player)
