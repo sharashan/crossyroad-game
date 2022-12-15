@@ -67,6 +67,16 @@ let test_moving_obstacle =
     direction = Left;
   }
 
+let test_right_obstacle =
+  {
+    ob_type = Car;
+    location = (20, 20);
+    time = 10;
+    speed = 2;
+    frame = 10;
+    direction = Left;
+  }
+
 let test_tree_obstacle = { object_type = Tree; location = (10, 10) }
 let test_rock_obstacle = { object_type = Rock; location = (30, 30) }
 
@@ -99,6 +109,7 @@ let check_tests =
       { object_type = Tree; location = (30, 30) };
     check_state_test "checking states" test_rock_obstacle test_rock_obstacle;
     check_moving_test "checking state" test_moving_obstacle test_moving_obstacle;
+    check_moving_test "checking state" test_right_obstacle test_right_obstacle;
     check_moving_test "checking states"
       {
         ob_type = Car;
@@ -126,6 +137,36 @@ let check_tests =
         oompa_height = 50;
       }
       false;
+    reach_top_test "testing if oompa reached the top"
+      {
+        location = (0, 900);
+        speed = 0;
+        frame = 0;
+        steps = 0;
+        oompa_width = 50;
+        oompa_height = 50;
+      }
+      true;
+    reach_top_test "testing if oompa reached the top"
+      {
+        location = (0, 850);
+        speed = 0;
+        frame = 0;
+        steps = 0;
+        oompa_width = 50;
+        oompa_height = 50;
+      }
+      false;
+    reach_top_test "testing if oompa reached the top"
+      {
+        location = (0, 851);
+        speed = 0;
+        frame = 0;
+        steps = 0;
+        oompa_width = 50;
+        oompa_height = 50;
+      }
+      true;
   ]
 
 let oompa_walk_test (name : string) (input : Characters.player)
@@ -165,6 +206,11 @@ let get_player_width (name : string) (input : player) (expected_output : int) :
     test =
   name >:: fun _ ->
   assert_equal expected_output input.oompa_width ~printer:string_of_int
+
+let get_player_steps (name : string) (input : player) (expected_output : int) :
+    test =
+  name >:: fun _ ->
+  assert_equal expected_output input.steps ~printer:string_of_int
 
 let get_player_height (name : string) (input : player) (expected_output : int) :
     test =
@@ -284,6 +330,16 @@ let gui_tests =
     get_player_speed "testing frame" oompa 0;
     get_player_width "testing width" oompa 75;
     get_player_height "testing height" oompa 80;
+    get_player_steps "testing steps"
+      {
+        location = (0, 850);
+        speed = 0;
+        frame = 0;
+        steps = 15;
+        oompa_width = 50;
+        oompa_height = 50;
+      }
+      15;
     get_gui_obstacle_type
       "testing obstacle type with newly created tree implemented in different \
        location"
