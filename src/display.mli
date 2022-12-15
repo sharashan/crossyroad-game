@@ -31,7 +31,21 @@ type input = {
 }
 (** The input type represents the input given my the player. *)
 
-type l
+type t = {
+  key_press : char;
+  moves_list : input list;
+}
+
+type gui_images = {
+  oompa_loompa : Graphics.image;
+  trees : Graphics.image;
+  cars : Graphics.image;
+  rocks : Graphics.image;
+  dead : Graphics.image;
+}
+
+type l = { images : gui_images }
+type map = { map : t }
 
 type init = { mutable oompa : Characters.player }
 (** The type that initializes a main player. This is the player whose moves are
@@ -44,6 +58,8 @@ type init2 = { mutable obstacle : Characters.obstacle }
 type init3 = { mutable rock : Characters.obstacle }
 (** The type that initializes an obstacle of type obstacle. This specific type
     initializes a rock object. *)
+
+val init_l : unit -> 'a
 
 val init : init
 (** [init] initializes the main player in the game by declaring values for the

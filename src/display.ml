@@ -20,11 +20,6 @@ type input = {
   mouse_down : bool;
 }
 
-type row = {
-  mutable cars : moving_ob list; 
-}
-let init_row = { cars = []; }
-
 type t = {
   key_press : char;
   moves_list : input list;
