@@ -1,4 +1,4 @@
-(*define types for objects in game*)
+(*Define types for objects in game*)
 
 type player = {
   mutable location : int * int;
@@ -48,6 +48,7 @@ let car_walk_n (c : moving_ob) : unit =
   let x, y = c.location in
   c.location <- (x - c.speed, y)
 
+(** [check_coll l cs] checks to see whether a moving object collides the player. *)
 let rec check_coll (l : int * int) (cs : moving_ob list) =
   match cs with
   | [] -> None
@@ -57,6 +58,8 @@ let rec check_coll (l : int * int) (cs : moving_ob list) =
       in
       if is_collision h then Some h else check_coll l t
 
+(**[update_game_state map] sets the record field state of map to be some new
+   state*)
 let update_game_state (map : t) =
   let new_state =
     match map.state with
@@ -73,6 +76,7 @@ let update_game_state (map : t) =
   in
   { map with state = new_state }
 
+(**[tick map] updates the location of the moving object while the state is Play*)
 let tick (map : t) =
   match map.state with
   | Fail | Start | Pause | Win -> map
@@ -87,10 +91,13 @@ let tick (map : t) =
       let map_before = { map with characters_moving = new_moving_ob } in
       update_game_state map_before
 
+(**[handle_event map event] applies tick to each event passed in, so that the
+   events are properly changed by tick. *)
 let handle_event map (event : e) =
   match event with
   | Tick -> tick map
 
+(** [spawn_moving_ob] creates a car object by initializing the record fields. *)
 let spawn_moving_ob (l : int * int) (ob_type : moving) : moving_ob =
   match ob_type with
   | Car ->
@@ -114,23 +121,23 @@ let car_height = 50
 (*car width/4*)
 let car_walk = car_width / 4
 
-(*[trees x y] initializes a tree obstacle at (x,y)*)
+(** [trees x y] initializes a tree obstacle at (x,y)*)
 let trees (x : int) (y : int) =
   { object_type = Tree; location = (Random.int 1000 + x, Random.int 150 + y) }
 
-(*[rock x y] initializes a rock obstacle at (x,y)*)
+(** [rock x y] initializes a rock obstacle at (x,y)*)
 let rock (x : int) (y : int) =
   { object_type = Rock; location = (Random.int 1000 + x, Random.int 200 + y) }
 
-(*[create_car_lst c] initializes a list of cars*)
+(** [create_car_lst c] initializes a list of cars*)
 let create_car_lst (c : car_list) = { hist_cars = [] }
 
-(*[add_car c car] adds car to the list c.hist_cars*)
+(** [add_car c car] adds car to the list c.hist_cars*)
 let add_car (c : car_list) (car : moving_ob) = c.hist_cars <- car :: c.hist_cars
 
-(*[car type x y t s f d] initializes a car*)
+(*When I initialize a car, need to call add_car to add the car to the car_list*)
 
-(**When I initialize a car, need to call add_car to add the car to the car_list*)
+(** [car type x y t s f d] initializes a car*)
 let car (ty : moving) (x : int) (y : int) (t : int) (s : int) (f : int)
     (d : direction) =
   {
@@ -142,15 +149,15 @@ let car (ty : moving) (x : int) (y : int) (t : int) (s : int) (f : int)
     direction = d;
   }
 
-(*[draw_car c] draws a car at the x and y coordinates *)
+(** [draw_car c] draws a car at the x and y coordinates *)
 let draw_car car_character () =
   Graphics.draw_rect
     (fst car_character.location)
     (snd car_character.location)
     car_width car_height
 
-(*[move_car c hist] moves the car in the direction specified by its direction
-  field. *)
+(** [move_car c hist] moves the car in the direction specified by its direction
+    field. *)
 let rec move_car car_character hist dt =
   if hist != [] then
     if car_character.direction = Right then
@@ -175,7 +182,7 @@ let rec move_car car_character hist dt =
             h.location <- (fst h.location, snd h.location);
             move_car car_character t dt)
 
-(*[updateCar c hist] calls [move_car c hist] to recursively move the car *)
+(** [updateCar c hist] calls [move_car c hist] to recursively move the car *)
 let rec updateCar car_character hist_cars (dt : int) =
   match hist_cars with
   | [] -> ()

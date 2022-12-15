@@ -1,4 +1,4 @@
-(** Representation of the different "characters" in the game.
+(** Representation of the different characters in the game.
 
     This module outlines the different types of objects in the game, including
     player, obj (non-moving obstacles), and moving (moving obstacles). Each of
