@@ -35,6 +35,9 @@ let check_player_test (name : string) (input : player)
     (expected_output : player) : test =
   name >:: fun _ -> assert_equal input expected_output
 
+let false_test input expected_output =
+  input >:: fun _ -> assert (not (expected_output ()))
+
 let check_moving_test (name : string) (input : moving_ob)
     (expected_output : moving_ob) : test =
   name >:: fun _ -> assert_equal input expected_output
@@ -49,7 +52,22 @@ let test_oompa =
     oompa_height = 10;
   }
 
+let reach_top_test (name : string) (input : player) (expected_output : bool) :
+    test =
+  name >:: fun _ ->
+  assert_equal expected_output (Display.reach_top input) ~printer:string_of_bool
+
 let test_moving_obstacle =
+  {
+    ob_type = Car;
+    location = (20, 20);
+    time = 10;
+    speed = 2;
+    frame = 10;
+    direction = Left;
+  }
+
+let test_right_obstacle =
   {
     ob_type = Car;
     location = (20, 20);
@@ -91,6 +109,7 @@ let check_tests =
       { object_type = Tree; location = (30, 30) };
     check_state_test "checking states" test_rock_obstacle test_rock_obstacle;
     check_moving_test "checking state" test_moving_obstacle test_moving_obstacle;
+    check_moving_test "checking state" test_right_obstacle test_right_obstacle;
     check_moving_test "checking states"
       {
         ob_type = Car;
@@ -108,6 +127,46 @@ let check_tests =
         frame = 10;
         direction = Left;
       };
+    reach_top_test "testing if oompa reached the top"
+      {
+        location = (0, 0);
+        speed = 0;
+        frame = 0;
+        steps = 0;
+        oompa_width = 50;
+        oompa_height = 50;
+      }
+      false;
+    reach_top_test "testing if oompa reached the top"
+      {
+        location = (0, 900);
+        speed = 0;
+        frame = 0;
+        steps = 0;
+        oompa_width = 50;
+        oompa_height = 50;
+      }
+      true;
+    reach_top_test "testing if oompa reached the top"
+      {
+        location = (0, 850);
+        speed = 0;
+        frame = 0;
+        steps = 0;
+        oompa_width = 50;
+        oompa_height = 50;
+      }
+      false;
+    reach_top_test "testing if oompa reached the top"
+      {
+        location = (0, 851);
+        speed = 0;
+        frame = 0;
+        steps = 0;
+        oompa_width = 50;
+        oompa_height = 50;
+      }
+      true;
   ]
 
 let oompa_walk_test (name : string) (input : Characters.player)
@@ -147,6 +206,11 @@ let get_player_width (name : string) (input : player) (expected_output : int) :
     test =
   name >:: fun _ ->
   assert_equal expected_output input.oompa_width ~printer:string_of_int
+
+let get_player_steps (name : string) (input : player) (expected_output : int) :
+    test =
+  name >:: fun _ ->
+  assert_equal expected_output input.steps ~printer:string_of_int
 
 let get_player_height (name : string) (input : player) (expected_output : int) :
     test =
@@ -213,6 +277,17 @@ let get_background (name : string) (input : background_type)
 
 let back_river_create = { back_type = River; location = (100, 100) }
 let back_grass_create = { back_type = Grass; location = (200, 100) }
+let spawn_car = Characters.spawn_moving_ob (10, 10) Car
+
+let check_spawn_car =
+  {
+    ob_type = Car;
+    location = (10, 10);
+    time = 0;
+    speed = 40;
+    frame = 0;
+    direction = Left;
+  }
 
 let gui_tests =
   let oompa =
@@ -255,6 +330,16 @@ let gui_tests =
     get_player_speed "testing frame" oompa 0;
     get_player_width "testing width" oompa 75;
     get_player_height "testing height" oompa 80;
+    get_player_steps "testing steps"
+      {
+        location = (0, 850);
+        speed = 0;
+        frame = 0;
+        steps = 15;
+        oompa_width = 50;
+        oompa_height = 50;
+      }
+      15;
     get_gui_obstacle_type
       "testing obstacle type with newly created tree implemented in different \
        location"
@@ -296,6 +381,18 @@ let gui_tests =
       "checking collision with non-empty list so but not colliding so it \
        returns false"
       non_collision_list oompa false;
+    get_moving_obstacle "checking type of moving obstacle" spawn_car
+      { check_spawn_car with ob_type = Car };
+    get_moving_obstacle "checking location of moving obstacle" spawn_car
+      { check_spawn_car with location = (10, 10) };
+    get_moving_obstacle "checking time of moving obstacle" spawn_car
+      { check_spawn_car with time = 0 };
+    get_moving_obstacle "checking speed of moving obstacle" spawn_car
+      { check_spawn_car with speed = 40 };
+    get_moving_obstacle "checking frame of moving obstacle" spawn_car
+      { check_spawn_car with frame = 0 };
+    get_moving_obstacle "checking direction of moving obstacle" spawn_car
+      { check_spawn_car with direction = Left };
   ]
 
 let test_string_to_state (name : string) (input : string)

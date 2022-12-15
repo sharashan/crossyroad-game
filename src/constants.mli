@@ -1,7 +1,7 @@
-(**Accumulation of all the constants used in the implementing the game.
+(** Accumulation of all the constants used in the implementing the game.
 
-   This module defines the constants that are used multiple times when
-   implementing the game.*)
+    This module defines the constants that are used multiple times when
+    implementing the game.*)
 
 (******************************************************************************)
 

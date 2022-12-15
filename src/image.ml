@@ -2,6 +2,10 @@ open Graphics
 open Camlimages
 open Images
 
+(** this is based off of the original source code of camlimages. The link to the
+    source:
+    https://gitlab.com/camlspotter/camlimages/-/blob/hg-b4.2.6/src/graphic_image.ml *)
+
 let array_of_image img r g b =
   match img with
   | Rgba32 bitmap ->
