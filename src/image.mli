@@ -10,12 +10,12 @@
     source:
     https://gitlab.com/camlspotter/camlimages/-/blob/hg-b4.2.6/src/graphic_image.ml *)
 
-val array_of_image : 'a -> 'b -> 'c -> 'd -> 'e
+val array_of_image : Images.t -> int -> int -> int -> int array array
 (** [array_of_image] converts the image into an a color matrix. *)
 
-val of_image : 'a -> 'b -> 'c -> 'd -> 'e
+val of_image : Images.t -> int -> int -> int -> Graphics.image
 (** [of_image] uses the Graphics function [make_image] to convert the color
     matrix into an image that is compatible with Graphics. *)
 
-val draw_image : int -> int -> 'a -> 'b -> 'c -> 'd -> 'e
+val draw_image : int -> int -> Images.t -> int -> int -> int -> unit
 (** [draw_image] draws the image that [of_image] returns. *)
