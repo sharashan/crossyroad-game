@@ -35,6 +35,7 @@ type t = {
   key_press : char;
   moves_list : input list;
 }
+(** The abstract type t represents the history of all of the moves of the player *)
 
 type gui_images = {
   oompa_loompa : Graphics.image;
@@ -43,9 +44,13 @@ type gui_images = {
   rocks : Graphics.image;
   dead : Graphics.image;
 }
+(** The gui_images type represents all the objects in the game*)
 
 type l = { images : gui_images }
+(** The images type represents all the images we use as players in the game*)
+
 type map = { map : t }
+(** The map type contains the player, moving objects, and game state*)
 
 type init = { mutable oompa : Characters.player }
 (** The type that initializes a main player. This is the player whose moves are
@@ -59,7 +64,8 @@ type init3 = { mutable rock : Characters.obstacle }
 (** The type that initializes an obstacle of type obstacle. This specific type
     initializes a rock object. *)
 
-val init_l : unit -> 'a
+val init_l : unit -> l
+(** [init_l] initializes all the images used in the game*)
 
 val init : init
 (** [init] initializes the main player in the game by declaring values for the
@@ -76,8 +82,14 @@ val init3 : init3
     the fields in the record. This involves initializing the location and object
     type. *)
 
+val map_init : Characters.t
+(** [map_init] initializes type t*)
+
 type pain_init = { trees : Characters.obstacle }
+(** the pain_init type that initializes the obstacle tree*)
+
 type rock_init = { rocks : Characters.obstacle }
+(** the rock_init type that initializes the obstacle rock*)
 
 val pain_init : int -> pain_init
 (** [pain_init] initializes a tree obstacle, but sets the record field location
@@ -92,8 +104,8 @@ val obstacle_lst : Characters.obstacle list
     obstacles. *)
 
 val rock_lst : Characters.obstacle list
-(**[obstacle_lst] creates a list of obstacles. This list contains rock
-   obstacles. *)
+(** [obstacle_lst] creates a list of obstacles. This list contains rock
+    obstacles. *)
 
 val text : string -> int -> int -> unit
 (** [text s size color] defines the set string, size, and color for the text
@@ -103,13 +115,18 @@ val take_a_step : Characters.player -> unit
 (** [take_a_step oompa] tracks the number of steps oompa takes. It increments
     the step field in the record by one per step. *)
 
-val print_list : Characters.obstacle list -> unit
 val create_issues_1 : Characters.obstacle list -> Characters.obstacle list
+(** [create_issues_1] creates trees on the first patch of grass on the map*)
+
 val create_issues_2 : Characters.obstacle list -> Characters.obstacle list
+(** [create_issues_2] creates trees on the second patch of grass on the map*)
+
 val create_issues_3 : Characters.obstacle list -> Characters.obstacle list
+(** [create_issues_3] creates rocks in the water on the map*)
+
 val x_lst : int array
-(*[x_lst] stores the values of the x-coordinates of the first set of trees. It
-  stores the randomly generated integers. The size of the array is 5. *)
+(** [x_lst] stores the values of the x-coordinates of the first set of trees. It
+    stores the randomly generated integers. The size of the array is 5. *)
 
 val x_lst2 : int array
 (** [x_lst2] stores the values of the x-coordinates of the second set of trees.
@@ -118,6 +135,10 @@ val x_lst2 : int array
 val x_lst3 : int array
 (** [x_lst3] stores the values of the x-coordinates of the set of rocks. It
     stores the randomly generated integers. The size of the array is 5. *)
+
+val check_x : int -> int
+(** [check_x ] checks if the set of x-coordinates for the obstacles stay within
+    the bounds of the map *)
 
 val map : ('a -> 'b) -> 'a array -> 'b array
 (** [map f lst] applies f to every element in lst. *)
@@ -145,6 +166,28 @@ val check_y2 : int -> int
 val check_y3 : int -> int
 (** [check_y3 x] checks if the set of y-coordinates for the set of rocks stay
     within the bounds of the water. *)
+
+val sleep : float -> unit
+(** [sleep x] delays the implementation of the game for x seconds*)
+
+type button = {
+  bottom_corner : int * int;
+  height : int;
+  width : int;
+}
+(** The button type creates a button on the game*)
+
+val init_pause_button : button
+(** [init_pause_button] initializes the pause button in the game*)
+
+val draw_box : button -> unit -> unit
+(** [draw_box button] draws a rectangle to represent the button*)
+
+val draw_pause_button : unit -> unit
+(** [draw_pause_button] adds details on the empty rectangle to represent pause*)
+
+val get_pause_input : unit -> unit
+(** [get_pause_input] pauses the game and changes the game state to pause*)
 
 val draw_draw_obstacles : l -> 'a -> 'b -> unit
 (** [draw_draw_obstacles h y] iteratively draws five trees in random coordinates
@@ -174,16 +217,17 @@ val draw_background : l -> unit -> unit
     elements, like the obstacles. *)
 
 val update_car_1 : l -> unit -> unit
-(**[update_car_1] draws the first car in its defined coordinates. *)
+(** [update_car_1] draws the first car in its defined coordinates. *)
 
 val update_car_2 : l -> unit -> unit
-(**[update_car_2] draws the first car in its defined coordinates. *)
+(** [update_car_2] draws the first car in its defined coordinates. *)
 
 val update_car_3 : l -> unit -> unit
 (** [update_car_3] draws the first car in its defined coordinates. *)
 
 val collision_car :
   Characters.player -> Characters.moving_ob -> Characters.moving_ob list -> bool
+(** [collision_car] checks to see if the player collides with the cars.*)
 
 val collision : Characters.player -> Characters.obstacle list -> bool
 (** [collision oompa lst] returns true if [oompa], the main player, collides
